@@ -15,15 +15,25 @@ require 'libs.slam'
 tiny = require 'libs.tiny'
 
 -- general purpose / utility
+require 'ScenePlay'
 require 'SceneStart'
 require 'util'
 
 -- pixels resolution
 WINDOW_SIZE = tiny.Vector2D(1280, 720) -- 16:9 aspect ratio
 VIRTUAL_SIZE = tiny.Vector2D(640, 360)
+PLAYER_SIZE = tiny.Vector2D(16, 10)
 
 -- resources
 FONTS = {
   ['retro-l'] = love.graphics.newFont('fonts/retro.ttf', 64),
   ['retroville-s'] = love.graphics.newFont('fonts/Retroville NC.ttf', 10) -- 10px bitmap
+}
+
+TEXTURES = {
+  ['player'] = love.graphics.newImage('graphics/player_placeholder.png')
+}
+
+QUADS = {
+  ['player'] = GenerateQuads(TEXTURES['player'], 3, 1, PLAYER_SIZE)
 }

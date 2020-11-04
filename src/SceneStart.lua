@@ -9,7 +9,7 @@ end
 
 function SceneStart:update(dt)
   if love.keyboard.keysPressed['space'] or love.keyboard.keysPressed['enter'] or love.keyboard.keysPressed['return'] or love.mouse.buttonReleased[1] then
-    -- TODO: change to 'play' scene
+    sceneManager:change('play')
   end
 end
 

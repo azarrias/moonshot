@@ -25,6 +25,7 @@ function love.load()
   love.window.setTitle(GAME_TITLE)
   
   local scenes = {
+    ['play'] = function() return ScenePlay() end,
     ['start'] = function() return SceneStart() end
   }
   sceneManager = tiny.SceneManager(scenes)
@@ -40,6 +41,8 @@ function love.update(dt)
   if love.keyboard.keysPressed['escape'] then
     love.event.quit()
   end
+  
+  sceneManager:update(dt)
   
   love.keyboard.keysPressed = {}
   love.mouse.buttonPressed = {}
