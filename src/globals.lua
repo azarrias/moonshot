@@ -21,7 +21,7 @@ require 'SceneStart'
 require 'util'
 
 -- pixels resolution
-WINDOW_SIZE = tiny.Vector2D(1280, 720) -- 16:9 aspect ratio
+WINDOW_SIZE = tiny.Vector2D(1920, 1080) -- 16:9 aspect ratio
 VIRTUAL_SIZE = tiny.Vector2D(640, 360)
 PLAYER_SIZE = tiny.Vector2D(16, 10)
 
