@@ -18,5 +18,11 @@ tiny = require 'libs.tiny'
 require 'util'
 
 -- pixels resolution
-WINDOW_SIZE = tiny.Vector2D(1280, 720)
-VIRTUAL_SIZE = tiny.Vector2D(384, 216)
+WINDOW_SIZE = tiny.Vector2D(1280, 720) -- 16:9 aspect ratio
+VIRTUAL_SIZE = tiny.Vector2D(640, 360)
+
+-- resources
+FONTS = {
+  ['retro-l'] = love.graphics.newFont('fonts/retro.ttf', 64),
+  ['retroville-s'] = love.graphics.newFont('fonts/Retroville NC.ttf', 10) -- 10px bitmap
+}

@@ -1,7 +1,5 @@
 require 'globals'
 
-FONT_SIZE = 32
-
 function love.load()
   if DEBUG_MODE then
     if arg[#arg] == "-debug" then 
@@ -18,7 +16,8 @@ function love.load()
   
   -- Set up window
   push:setupScreen(VIRTUAL_SIZE.x, VIRTUAL_SIZE.y, WINDOW_SIZE.x, WINDOW_SIZE.y, {
-    vsync = true,
+    --vsync = true,
+    vsync = false,
     fullscreen = not WEB_OS,
     resizable = not (MOBILE_OS or WEB_OS),
     stencil = not WEB_OS and true or false
@@ -28,9 +27,6 @@ function love.load()
   love.keyboard.keysPressed = {}
   love.mouse.buttonPressed = {}
   love.mouse.buttonReleased = {}
-  
-  font = love.graphics.newFont(FONT_SIZE)
-  love.graphics.setFont(font)
 end
 
 function love.update(dt)
@@ -66,6 +62,17 @@ function love.draw()
   push:start()
   love.graphics.clear(0.5, 0.1, 0.1)
   love.graphics.setColor(0, 0, 0)
-  love.graphics.printf(GAME_TITLE, 0, math.floor((VIRTUAL_SIZE.y - FONT_SIZE)/ 2), VIRTUAL_SIZE.x, 'center')
+  love.graphics.setFont(FONTS['retro-l'])
+  love.graphics.printf(GAME_TITLE, 0, math.floor((VIRTUAL_SIZE.y - FONTS['retro-l']:getHeight())/ 2), VIRTUAL_SIZE.x, 'center')
+  
+  -- draw fps indicator
+  local fps = love.timer.getFPS()
+  if fps >= 60 then
+    love.graphics.setColor(0, 1, 0)
+  else
+    love.graphics.setColor(1, 0, 0)
+  end
+  love.graphics.setFont(FONTS['retroville-s'])
+  love.graphics.printf("FPS: " .. fps, 0, 5, VIRTUAL_SIZE.x - 5, 'right')
   push:finish()
 end
