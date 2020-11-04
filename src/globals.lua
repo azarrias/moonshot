@@ -15,6 +15,7 @@ require 'libs.slam'
 tiny = require 'libs.tiny'
 
 -- general purpose / utility
+require 'SceneStart'
 require 'util'
 
 -- pixels resolution

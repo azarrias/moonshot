@@ -24,6 +24,12 @@ function love.load()
   })
   love.window.setTitle(GAME_TITLE)
   
+  local scenes = {
+    ['start'] = function() return SceneStart() end
+  }
+  sceneManager = tiny.SceneManager(scenes)
+  sceneManager:change('start')
+  
   love.keyboard.keysPressed = {}
   love.mouse.buttonPressed = {}
   love.mouse.buttonReleased = {}
@@ -60,10 +66,7 @@ end
 
 function love.draw()
   push:start()
-  love.graphics.clear(0.5, 0.1, 0.1)
-  love.graphics.setColor(0, 0, 0)
-  love.graphics.setFont(FONTS['retro-l'])
-  love.graphics.printf(GAME_TITLE, 0, math.floor((VIRTUAL_SIZE.y - FONTS['retro-l']:getHeight())/ 2), VIRTUAL_SIZE.x, 'center')
+  sceneManager:render()
   
   -- draw fps indicator
   local fps = love.timer.getFPS()
