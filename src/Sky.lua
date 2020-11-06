@@ -10,17 +10,29 @@ function Sky:init()
   love.graphics.setCanvas()
   self.starImage = love.graphics.newImage(canvas:newImageData())
   self.stars = {}
+  self.spriteBatch = love.graphics.newSpriteBatch(self.starImage)
   for i = 1, 100 do
     self:AddStar(math.random(VIRTUAL_SIZE.x), math.random(VIRTUAL_SIZE.y))
   end
+  self:UpdateSpriteBatch()
 end
 
 function Sky:AddStar(x, y)
   table.insert(self.stars, { x = x, y = y })
 end
 
-function Sky:render()
+function Sky:UpdateSpriteBatch()
+  self.spriteBatch:clear()
   for k, star in ipairs(self.stars) do
-    love.graphics.draw(self.starImage, star.x, star.y, 0, 1, 1)
+    self.spriteBatch:add(star.x, star.y)
   end
+  self.spriteBatch:flush()
+end
+
+function Sky:update(dt)
+
+end
+
+function Sky:render()
+  love.graphics.draw(self.spriteBatch)
 end

@@ -6,6 +6,7 @@ function ScenePlay:init()
 end
 
 function ScenePlay:update(dt)
+  self.sky:update(dt)
   self.player:update(dt)
 end
 
