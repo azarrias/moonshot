@@ -18,6 +18,7 @@ tiny = require 'libs.tiny'
 require 'PlayerController'
 require 'ScenePlay'
 require 'SceneStart'
+require 'Sky'
 require 'util'
 
 -- pixels resolution

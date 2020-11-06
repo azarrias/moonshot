@@ -2,6 +2,7 @@ ScenePlay = Class{__includes=tiny.Scene}
 
 function ScenePlay:init()
   self.player = self:CreatePlayer()
+  self.sky = Sky()
 end
 
 function ScenePlay:update(dt)
@@ -9,6 +10,7 @@ function ScenePlay:update(dt)
 end
 
 function ScenePlay:render()
+  self.sky:render()
   self.player:render()
 end
 
