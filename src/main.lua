@@ -44,6 +44,9 @@ function love.update(dt)
   
   sceneManager:update(dt)
   
+  -- Update all timers in the default group
+  Timer.update(dt)
+  
   love.keyboard.keysPressed = {}
   love.mouse.buttonPressed = {}
   love.mouse.buttonReleased = {}

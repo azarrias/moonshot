@@ -14,6 +14,7 @@ function SceneStart:update(dt)
 end
 
 function SceneStart:render()
-  love.graphics.clear(0.5, 0.1, 0.1)
+  --love.graphics.clear(0.5, 0.1, 0.1)
+  love.graphics.clear(0.5, 0.1, 0.5)
   RenderCenteredText(self.text)
 end

@@ -12,6 +12,7 @@ WEB_OS = (love._version_major > 0 or love._version_minor >= 9) and love.system.g
 Class = require 'libs.class'
 push = require 'libs.push'
 require 'libs.slam'
+Timer = require 'libs.knife.timer'
 tiny = require 'libs.tiny'
 
 -- general purpose / utility

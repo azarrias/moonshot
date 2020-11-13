@@ -6,9 +6,7 @@ function ScenePlay:init()
   self.mgSky = SkyLayer(25)
   self.fgSky = SkyLayer(30)
   
-  self.shader = love.graphics.newShader("shaders/laser_beam.fs")
-  self.shader:send("resolution", { VIRTUAL_SIZE.x, VIRTUAL_SIZE.y })
-  self.start_time = love.timer.getTime()
+  self.playerController = self.player.components['Script']['PlayerController']
 end
 
 function ScenePlay:update(dt)
@@ -16,8 +14,6 @@ function ScenePlay:update(dt)
   self.mgSky:update(dt)
   self.fgSky:update(dt)
   self.player:update(dt)
-  self.shader:send("time", love.timer.getTime() - self.start_time)
-  self.shader:send("position", { self.player.position.x + 24, self.player.position.y + 1 })
 end
 
 function ScenePlay:render()
@@ -25,10 +21,11 @@ function ScenePlay:render()
   self.mgSky:render()
   self.fgSky:render()
   self.player:render()
-  love.graphics.setShader(self.shader)
-  love.graphics.setColor(1, 0, 0, 0)
-  love.graphics.rectangle('fill', 0, 0, VIRTUAL_SIZE.x * 5, VIRTUAL_SIZE.y)
-  love.graphics.setShader()
+  if self.playerController.laserBeamStartTime then
+    love.graphics.setShader(self.playerController.laserBeamShader)
+    love.graphics.rectangle('fill', 0, 0, VIRTUAL_SIZE.x * 5, VIRTUAL_SIZE.y)
+    love.graphics.setShader()
+  end
 end
 
 function ScenePlay:CreatePlayer()
