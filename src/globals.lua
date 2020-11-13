@@ -24,7 +24,8 @@ require 'util'
 -- pixels resolution
 WINDOW_SIZE = tiny.Vector2D(1920, 1080) -- 16:9 aspect ratio
 VIRTUAL_SIZE = tiny.Vector2D(640, 360)
-PLAYER_SIZE = tiny.Vector2D(16, 10)
+--PLAYER_SIZE = tiny.Vector2D(16, 10)
+PLAYER_SIZE = tiny.Vector2D(32, 40)
 
 -- resources
 FONTS = {
@@ -33,9 +34,11 @@ FONTS = {
 }
 
 TEXTURES = {
-  ['player'] = love.graphics.newImage('graphics/player_placeholder.png')
+  --['player'] = love.graphics.newImage('graphics/player_placeholder.png')
+  ['player'] = love.graphics.newImage('graphics/Sprite-0001.png')
 }
 
 QUADS = {
-  ['player'] = GenerateQuads(TEXTURES['player'], 3, 1, PLAYER_SIZE)
+  --['player'] = GenerateQuads(TEXTURES['player'], 3, 1, PLAYER_SIZE)
+  ['player'] = GenerateQuads(TEXTURES['player'], 2, 1, PLAYER_SIZE, tiny.Vector2D(30, 96), tiny.Vector2D(0, 13))
 }

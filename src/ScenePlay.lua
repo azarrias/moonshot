@@ -23,13 +23,15 @@ end
 
 function ScenePlay:CreatePlayer()
   local player = tiny.Entity(math.floor(VIRTUAL_SIZE.x / 2), math.floor(VIRTUAL_SIZE.y / 2))
+  local defaultQuadId = 2
   
   -- sprite component
-  local playerSprite = tiny.Sprite(TEXTURES['player'], QUADS['player'][2])
+  local playerSprite = tiny.Sprite(TEXTURES['player'], QUADS['player'][defaultQuadId])
   player:AddComponent(playerSprite)
   
   -- register controller script
   local playerController = player:AddScript('PlayerController')
+  playerController.current_quad_id = defaultQuadId
   
   return player
 end
