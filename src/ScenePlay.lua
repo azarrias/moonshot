@@ -2,16 +2,22 @@ ScenePlay = Class{__includes=tiny.Scene}
 
 function ScenePlay:init()
   self.player = self:CreatePlayer()
-  self.sky = Sky()
+  self.cameraOffsetX = 0
+  self.cameraSpeedX = 15
+  self.sky = SkyLayer()
 end
 
 function ScenePlay:update(dt)
+  self.cameraOffsetX = self.cameraOffsetX + self.cameraSpeedX * dt
   self.sky:update(dt)
   self.player:update(dt)
 end
 
 function ScenePlay:render()
+  love.graphics.push()
+  love.graphics.translate(math.floor(-self.cameraOffsetX + 0.5), 0)
   self.sky:render()
+  love.graphics.pop()
   self.player:render()
 end
 

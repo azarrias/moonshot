@@ -1,6 +1,6 @@
-Sky = Class{}
+SkyLayer = Class{}
 
-function Sky:init()
+function SkyLayer:init()
   -- create image data from point on canvas
   local canvas = love.graphics.newCanvas(1, 1)
   love.graphics.setCanvas(canvas)
@@ -9,19 +9,20 @@ function Sky:init()
   love.graphics.points(1, 1)
   love.graphics.setCanvas()
   self.starImage = love.graphics.newImage(canvas:newImageData())
+  
   self.stars = {}
   self.spriteBatch = love.graphics.newSpriteBatch(self.starImage)
   for i = 1, 100 do
-    self:AddStar(math.random(VIRTUAL_SIZE.x), math.random(VIRTUAL_SIZE.y))
+    self:AddStar(math.random(VIRTUAL_SIZE.x * 2), math.random(VIRTUAL_SIZE.y))
   end
   self:UpdateSpriteBatch()
 end
 
-function Sky:AddStar(x, y)
+function SkyLayer:AddStar(x, y)
   table.insert(self.stars, { x = x, y = y })
 end
 
-function Sky:UpdateSpriteBatch()
+function SkyLayer:UpdateSpriteBatch()
   self.spriteBatch:clear()
   for k, star in ipairs(self.stars) do
     self.spriteBatch:add(star.x, star.y)
@@ -29,10 +30,9 @@ function Sky:UpdateSpriteBatch()
   self.spriteBatch:flush()
 end
 
-function Sky:update(dt)
-
+function SkyLayer:update(dt)
 end
 
-function Sky:render()
+function SkyLayer:render()
   love.graphics.draw(self.spriteBatch)
 end
