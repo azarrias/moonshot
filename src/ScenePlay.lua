@@ -2,20 +2,23 @@ ScenePlay = Class{__includes=tiny.Scene}
 
 function ScenePlay:init()
   self.player = self:CreatePlayer()
-  self.sky = SkyLayer()
+  self.bgSky = SkyLayer(20)
+  self.mgSky = SkyLayer(25)
+  self.fgSky = SkyLayer(30)
 end
 
 function ScenePlay:update(dt)
-  self.sky:update(dt)
+  self.bgSky:update(dt)
+  self.mgSky:update(dt)
+  self.fgSky:update(dt)
   self.player:update(dt)
 end
 
 function ScenePlay:render()
-  self.sky:render()
+  self.bgSky:render()
+  self.mgSky:render()
+  self.fgSky:render()
   self.player:render()
-
-  love.graphics.setFont(FONTS['retroville-s'])
-  love.graphics.printf("cameraOffsetX: " .. math.floor(self.sky.cameraOffsetX), 5, 5, VIRTUAL_SIZE.x - 5, 'left')
 end
 
 function ScenePlay:CreatePlayer()
