@@ -16,11 +16,16 @@ Timer = require 'libs.knife.timer'
 tiny = require 'libs.tiny'
 
 -- general purpose / utility
+require 'HUD'
+require 'Level'
 require 'PlayerController'
 require 'ScenePlay'
 require 'SceneStart'
 require 'SkyLayer'
 require 'util'
+
+-- data
+require 'data.levels'
 
 -- pixels resolution
 WINDOW_SIZE = tiny.Vector2D(1920, 1080) -- 16:9 aspect ratio

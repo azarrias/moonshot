@@ -9,6 +9,7 @@ function PlayerController:init()
   self.laserBeamShader = love.graphics.newShader("shaders/laser_beam.fs")
   self.laserBeamShader:send("resolution", { VIRTUAL_SIZE.x, VIRTUAL_SIZE.y })
   self.laserBeamStartTime = nil
+  self.laserBeamDuration = 0.5
 end
 
 function PlayerController:update(dt)
@@ -22,7 +23,7 @@ function PlayerController:update(dt)
   -- shoot laser beam
   if love.keyboard.keysPressed['space'] then
     self.laserBeamStartTime = love.timer.getTime()
-    self.laserBeamTimer = Timer.after(0.5, 
+    self.laserBeamTimer = Timer.after(self.laserBeamDuration, 
       function() self.laserBeamStartTime = nil end)
   end
   

@@ -1,25 +1,26 @@
 ScenePlay = Class{__includes=tiny.Scene}
 
 function ScenePlay:init()
+  self.level = nil
+  self.hud = nil
   self.player = self:CreatePlayer()
-  self.bgSky = SkyLayer(20)
-  self.mgSky = SkyLayer(25)
-  self.fgSky = SkyLayer(30)
-  
   self.playerController = self.player.components['Script']['PlayerController']
 end
 
+function ScenePlay:enter(params)
+  self.level = Level(params.level)
+  self.hud = HUD(params.level, params.points)
+end
+
 function ScenePlay:update(dt)
-  self.bgSky:update(dt)
-  self.mgSky:update(dt)
-  self.fgSky:update(dt)
+  self.level:update(dt)
+  self.hud:update(dt)
   self.player:update(dt)
 end
 
 function ScenePlay:render()
-  self.bgSky:render()
-  self.mgSky:render()
-  self.fgSky:render()
+  self.level:render()
+  self.hud:render()
   self.player:render()
   if self.playerController.laserBeamStartTime then
     love.graphics.setShader(self.playerController.laserBeamShader)
