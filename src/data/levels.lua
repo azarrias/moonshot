@@ -8,7 +8,7 @@ LEVELS = {
     hasBoss = false,
     finalXPos = 300
   },
-  [3] = {
+--[[  [3] = {
     hasBoss = false,
     finalXPos = 300
   },
@@ -16,4 +16,5 @@ LEVELS = {
     hasBoss = true,
     finalXPos = 300
   },
+  ]]
 }

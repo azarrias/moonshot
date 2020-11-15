@@ -23,7 +23,11 @@ function ScenePlay:update(dt)
   end
   -- use the x camera offset of the background sky layer to check if level was cleared
   if self.level.bgSky.cameraOffsetX > self.level.data.finalXPos then
-    sceneManager:change('level-clear', { points = self.points, level = self.level.num })
+    if LEVELS[self.level.num + 1] ~= nil then
+      sceneManager:change('level-clear', { points = self.points, level = self.level.num })
+    else
+      sceneManager:change('victory', { points = self.points })
+    end
   end
 end
 

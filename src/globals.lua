@@ -22,6 +22,7 @@ require 'PlayerController'
 require 'SceneLevelClear'
 require 'ScenePlay'
 require 'SceneStart'
+require 'SceneVictory'
 require 'SkyLayer'
 require 'util'
 

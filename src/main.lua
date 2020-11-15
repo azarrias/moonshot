@@ -28,6 +28,7 @@ function love.load()
     ['level-clear'] = function() return SceneLevelClear() end,
     ['play'] = function() return ScenePlay() end,
     ['start'] = function() return SceneStart() end,
+    ['victory'] = function() return SceneVictory() end,
   }
   sceneManager = tiny.SceneManager(scenes)
   sceneManager:change('start')
