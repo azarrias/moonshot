@@ -9,7 +9,9 @@ function PlayerController:init()
   self.laserBeamShader = love.graphics.newShader("shaders/laser_beam.fs")
   self.laserBeamShader:send("resolution", { VIRTUAL_SIZE.x, VIRTUAL_SIZE.y })
   self.laserBeamStartTime = nil
-  self.laserBeamDuration = 0.5
+  self.laserBeamDuration = 0.8
+  self.laserBeamCooldown = 1.5
+  self.canShootLaser = true
 end
 
 function PlayerController:update(dt)
@@ -21,10 +23,13 @@ function PlayerController:update(dt)
   
   -- handle input
   -- shoot laser beam
-  if love.keyboard.keysPressed['space'] then
+  if love.keyboard.keysPressed['space'] and self.canShootLaser then
     self.laserBeamStartTime = love.timer.getTime()
-    self.laserBeamTimer = Timer.after(self.laserBeamDuration, 
+    self.canShootLaser = false
+    Timer.after(self.laserBeamDuration, 
       function() self.laserBeamStartTime = nil end)
+    Timer.after(self.laserBeamCooldown, 
+      function() self.canShootLaser = true end)
   end
   
   if not love.keyboard.isDown('down') and not love.keyboard.isDown('up') then
@@ -70,6 +75,6 @@ function PlayerController:update(dt)
   -- if a laser beam has been shot, the shader will be active, pass it uniform variables
   if self.laserBeamStartTime then
     self.laserBeamShader:send("time", love.timer.getTime() - self.laserBeamStartTime)
-    self.laserBeamShader:send("position", { position.x + 24, position.y + 1 })
+    self.laserBeamShader:send("position", { position.x + 42, position.y + 1 })
   end
 end

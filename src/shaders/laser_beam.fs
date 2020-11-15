@@ -25,11 +25,11 @@ vec4 effect(vec4 color, Image texture, vec2 texture_coords, vec2 screen_coords)
   vec4 col = vec4(0.);
   vec4 beam_color = vec4(1., 1., 0., 1.);
   
-  float c = Circle(uv, vec2(0.), .025, 0.01);
+  float c = Circle(uv, vec2(0.), .07, 0.01);
   col += c * beam_color;
   
-  float beam = max(0, 1 - abs(uv.y * 75));
-  if (uv.x < 0 || time * 5 - uv.x < 0) beam = 0;
+  float beam = max(0, 1 - abs(uv.y * 25));
+  if (uv.x < .0 || time * 5 - uv.x < .0) beam = 0;
   
   col += beam * beam_color;
   
