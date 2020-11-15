@@ -3,6 +3,8 @@ Level = Class{}
 function Level:init(levelNum)
   self.num = levelNum
   
+  self.data = LEVELS[levelNum]
+  
   self.bgSky = SkyLayer(20)
   self.mgSky = SkyLayer(25)
   self.fgSky = SkyLayer(30)

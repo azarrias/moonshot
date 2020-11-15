@@ -25,8 +25,9 @@ function love.load()
   love.window.setTitle(GAME_TITLE)
   
   local scenes = {
+    ['level-clear'] = function() return SceneLevelClear() end,
     ['play'] = function() return ScenePlay() end,
-    ['start'] = function() return SceneStart() end
+    ['start'] = function() return SceneStart() end,
   }
   sceneManager = tiny.SceneManager(scenes)
   sceneManager:change('start')

@@ -2,6 +2,7 @@ ScenePlay = Class{__includes=tiny.Scene}
 
 function ScenePlay:init()
   self.level = nil
+  self.points = nil
   self.hud = nil
   self.player = self:CreatePlayer()
   self.playerController = self.player.components['Script']['PlayerController']
@@ -9,6 +10,7 @@ end
 
 function ScenePlay:enter(params)
   self.level = Level(params.level)
+  self.points = params.points
   self.hud = HUD(params.level, params.points)
 end
 
@@ -16,6 +18,13 @@ function ScenePlay:update(dt)
   self.level:update(dt)
   self.hud:update(dt)
   self.player:update(dt)
+  if love.keyboard.keysPressed['p'] then
+    print(self.level.bgSky.cameraOffsetX)
+  end
+  -- use the x camera offset of the background sky layer to check if level was cleared
+  if self.level.bgSky.cameraOffsetX > self.level.data.finalXPos then
+    sceneManager:change('level-clear', { points = self.points, level = self.level.num })
+  end
 end
 
 function ScenePlay:render()
