@@ -1,20 +1,23 @@
-ScenePlay = Class{__includes=tiny.Scene}
+StatePlay = Class{__includes=tiny.State}
 
-function ScenePlay:init()
-  self.level = nil
-  self.points = nil
+function StatePlay:init()
   self.hud = nil
+  self.points = 0
+  self:NewLevel()
   self.player = self:CreatePlayer()
   self.playerController = self.player.components['Script']['PlayerController']
 end
 
-function ScenePlay:enter(params)
-  self.level = Level(params.level)
-  self.points = params.points
-  self.hud = HUD(params.level, params.points)
+function StatePlay:NewLevel()
+  local levelNum = self.level ~= nil and self.level.num ~= nil and self.level.num + 1 or 1
+  self.level = Level(levelNum)
+  self.hud = HUD(levelNum, self.points)
 end
 
-function ScenePlay:update(dt)
+function StatePlay:enter()
+end
+
+function StatePlay:update(dt)
   self.level:update(dt)
   self.hud:update(dt)
   self.player:update(dt)
@@ -24,14 +27,14 @@ function ScenePlay:update(dt)
   -- use the x camera offset of the background sky layer to check if level was cleared
   if self.level.bgSky.cameraOffsetX > self.level.data.finalXPos then
     if LEVELS[self.level.num + 1] ~= nil then
-      sceneManager:change('level-clear', { points = self.points, level = self.level.num })
+      gameManager:Push(StateLevelClear(self))
     else
-      sceneManager:change('victory', { points = self.points })
+      gameManager:Push(StateVictory(self.points))
     end
   end
 end
 
-function ScenePlay:render()
+function StatePlay:render()
   self.level:render()
   self.hud:render()
   self.player:render()
@@ -42,7 +45,7 @@ function ScenePlay:render()
   end
 end
 
-function ScenePlay:CreatePlayer()
+function StatePlay:CreatePlayer()
   local player = tiny.Entity(math.floor(VIRTUAL_SIZE.x / 2), math.floor(VIRTUAL_SIZE.y / 2))
   local defaultQuadId = 1
   

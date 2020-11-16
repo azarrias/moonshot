@@ -24,14 +24,10 @@ function love.load()
   })
   love.window.setTitle(GAME_TITLE)
   
-  local scenes = {
-    ['level-clear'] = function() return SceneLevelClear() end,
-    ['play'] = function() return ScenePlay() end,
-    ['start'] = function() return SceneStart() end,
-    ['victory'] = function() return SceneVictory() end,
-  }
-  sceneManager = tiny.SceneManager(scenes)
-  sceneManager:change('start')
+  -- use a stack for the game state machine
+  -- this way, all data and behavior is preserved between state changes
+  gameManager = tiny.StackFSM()
+  gameManager:Push(StateStart())
   
   love.keyboard.keysPressed = {}
   love.mouse.buttonPressed = {}
@@ -44,10 +40,10 @@ function love.update(dt)
     love.event.quit()
   end
   
-  sceneManager:update(dt)
-  
   -- Update all timers in the default group
   Timer.update(dt)
+  
+  gameManager:update(dt)
   
   love.keyboard.keysPressed = {}
   love.mouse.buttonPressed = {}
@@ -74,7 +70,7 @@ end
 
 function love.draw()
   push:start()
-  sceneManager:render()
+  gameManager:render()
   
   -- draw fps indicator
   local fps = love.timer.getFPS()
