@@ -3,6 +3,7 @@ StatePlay = Class{__includes=tiny.State}
 function StatePlay:init()
   self.hud = nil
   self.points = 0
+  self.level = nil
   self:NewLevel()
   self.player = self:CreatePlayer()
   self.playerController = self.player.components['Script']['PlayerController']
@@ -24,6 +25,7 @@ function StatePlay:update(dt)
   if love.keyboard.keysPressed['p'] then
     print(self.level.bgSky.cameraOffsetX)
   end
+  
   -- use the x camera offset of the background sky layer to check if level was cleared
   if self.level.bgSky.cameraOffsetX > self.level.data.finalXPos then
     if LEVELS[self.level.num + 1] ~= nil then
