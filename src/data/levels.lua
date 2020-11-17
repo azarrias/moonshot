@@ -2,8 +2,8 @@
 LEVELS = {
   [1] = {
     hasBoss = false,
-    finalXPos = 500,
-    enemies = { 600, 800 }
+    finalXPos = 1000,
+    enemies = { 800, 1200 }
   },
   [2] = {
     hasBoss = false,

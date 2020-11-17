@@ -16,8 +16,8 @@ function love.load()
   
   -- Set up window
   push:setupScreen(VIRTUAL_SIZE.x, VIRTUAL_SIZE.y, WINDOW_SIZE.x, WINDOW_SIZE.y, {
-    --vsync = true,
-    vsync = false,
+    vsync = true,
+    --vsync = false,
     fullscreen = not WEB_OS,
     resizable = not (MOBILE_OS or WEB_OS),
     stencil = not WEB_OS and true or false

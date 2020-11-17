@@ -11,7 +11,7 @@ function Level:init(levelNum)
   
   self.enemies = {}
   for k, enemyX in ipairs(self.data.enemies) do
-    table.insert(self.enemies, self:CreateEnemy(enemyX, VIRTUAL_SIZE.y / 2))
+    table.insert(self.enemies, self:CreateEnemy(enemyX, VIRTUAL_SIZE.y / 2, DegreesToRadians(270), 0.25, 0.5))
   end
 end
 
@@ -39,8 +39,8 @@ function Level:render()
 
 end
 
-function Level:CreateEnemy(posx, posy)
-  local enemy = tiny.Entity(posx, posy)
+function Level:CreateEnemy(posx, posy, rot, scalex, scaley)
+  local enemy = tiny.Entity(posx, posy, rot, scalex, scaley)
   local quad_id = 1
   
   -- sprite component
