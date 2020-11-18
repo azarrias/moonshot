@@ -43,13 +43,14 @@ function Level:CreateEnemy(posx, posy, rot, scalex, scaley)
   local enemy = tiny.Entity(posx, posy, rot, scalex, scaley)
   local quad_id = 1
   
-  -- sprite component
-  local enemySprite = tiny.Sprite(TEXTURES['enemies'], QUADS['enemies'][quad_id])
-  enemy:AddComponent(enemySprite)
+  local sprite = tiny.Sprite(TEXTURES['enemies'], QUADS['enemies'][quad_id])
+  enemy:AddComponent(sprite)
   
-  -- register controller script
   local enemyController = enemy:AddScript('EnemyController')
   enemyController.cameraSpeedX = self.bgSky.cameraSpeedX
+  
+  local collider = tiny.Collider(tiny.Vector2D(0, 0), ENEMY_SIZE / 4 - tiny.Vector2D(18, 34))
+  enemy:AddComponent(collider)
   
   return enemy
 end

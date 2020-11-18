@@ -3,8 +3,6 @@ PlayerController = Class{__includes=tiny.Script}
 function PlayerController:init()
   tiny.Script.init(self, 'PlayerController')
   self.speed = 200
-  --self.current_quad_id = 2
-  self.current_quad_id = 1
   
   self.laserBeamShader = love.graphics.newShader("shaders/laser_beam.fs")
   self.laserBeamShader:send("resolution", { VIRTUAL_SIZE.x, VIRTUAL_SIZE.y })
@@ -21,11 +19,23 @@ function PlayerController:update(dt)
   local left_bound = math.floor(PLAYER_SIZE.x / 2 + VIRTUAL_SIZE.x / 20)
   local right_bound = math.floor(VIRTUAL_SIZE.x - PLAYER_SIZE.x / 2 - VIRTUAL_SIZE.x / 30)
   
-  -- handle input
-  -- shoot laser beam
+  -- update the animator controller's parameters with the given input
+  local playerAnimatorController = self.entity.components['AnimatorController']
+  
+  local isDownDown = love.keyboard.isDown('down')
+  local isDownUp = love.keyboard.isDown('up')
+  local isDownLeft = love.keyboard.isDown('left')
+  local isDownRight = love.keyboard.isDown('right')
+  
+  playerAnimatorController:SetValue('MoveDown', isDownDown)
+  playerAnimatorController:SetValue('MoveUp', isDownUp)
+  playerAnimatorController:SetValue('MoveLeft', isDownLeft)
+  playerAnimatorController:SetValue('MoveRight', isDownRight)
+  
   if love.keyboard.keysPressed['space'] and self.canShootLaser then
     self.laserBeamStartTime = love.timer.getTime()
     self.canShootLaser = false
+    playerAnimatorController:SetTrigger('Shoot')
     Timer.after(self.laserBeamDuration, 
       function() self.laserBeamStartTime = nil end)
     Timer.after(self.laserBeamCooldown, 
