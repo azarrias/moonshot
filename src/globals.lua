@@ -40,7 +40,7 @@ WINDOW_SIZE = tiny.Vector2D(1920, 1080) -- 16:9 aspect ratio
 VIRTUAL_SIZE = tiny.Vector2D(640, 360)
 --PLAYER_SIZE = tiny.Vector2D(16, 10)
 PLAYER_SIZE = tiny.Vector2D(30, 37)
-ENEMY_SIZE = tiny.Vector2D(256, 256)
+ENEMY_SIZE = tiny.Vector2D(29, 31)
 
 -- resources
 FONTS = {
@@ -50,7 +50,7 @@ FONTS = {
 
 TEXTURES = {
   ['player'] = love.graphics.newImage('graphics/player.png'),
-  ['enemies'] = love.graphics.newImage('graphics/ships.png')
+  ['enemy'] = love.graphics.newImage('graphics/enemy_1.png')
 }
 
 QUADS = {
@@ -61,5 +61,5 @@ QUADS = {
   ['player-left'] = GenerateQuads(TEXTURES['player'], 1, 4, PLAYER_SIZE, tiny.Vector2D(330, 0)),
   ['player-up'] = GenerateQuads(TEXTURES['player'], 1, 2, PLAYER_SIZE, tiny.Vector2D(450, 0)),
   ['player-down'] = GenerateQuads(TEXTURES['player'], 1, 2, PLAYER_SIZE, tiny.Vector2D(510, 0)),
-  ['enemies'] = GenerateQuads(TEXTURES['enemies'], 10, 1, ENEMY_SIZE)
+  ['enemy-moving'] = GenerateQuads(TEXTURES['enemy'], 1, 6, ENEMY_SIZE)
 }
