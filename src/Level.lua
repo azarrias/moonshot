@@ -1,6 +1,6 @@
 Level = Class{}
 
-function Level:init(levelNum)
+function Level:init(player, levelNum)
   self.num = levelNum
   
   self.data = LEVELS[self.num]
@@ -13,6 +13,8 @@ function Level:init(levelNum)
   for k, e in ipairs(self.data.enemies) do
     table.insert(self.enemies, self:CreateEnemy(e.type_id, e.position))
   end
+  
+  self.player = player
 end
 
 function Level:update(dt)
@@ -23,6 +25,16 @@ function Level:update(dt)
   for k, enemy in ipairs(self.enemies) do
     enemy:update(dt)
   end
+  
+  -- check for collisions between player and enemies
+  -- iterate backwards for safe removal
+  for k = #self.enemies, 1, -1 do
+    if self.enemies[k].components['Collider'] then
+      if self.player.components['Collider'][1]:Collides(self.enemies[k].components['Collider'][1]) then
+        table.remove(self.enemies, k)
+      end
+    end
+  end
 end
 
 function Level:render()
@@ -31,12 +43,8 @@ function Level:render()
   self.fgSky:render()
   
   for k, enemy in ipairs(self.enemies) do
-    love.graphics.push()
-    love.graphics.translate(math.floor(-enemy.components['Script']['EnemyController'].cameraOffsetX + 0.5), 0)
     enemy:render()
-    love.graphics.pop()
   end
-
 end
 
 function Level:CreateEnemy(type_id, pos)

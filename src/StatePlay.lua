@@ -4,14 +4,14 @@ function StatePlay:init()
   self.hud = nil
   self.points = 0
   self.level = nil
-  self:NewLevel()
   self.player = self:CreatePlayer()
   self.playerController = self.player.components['Script']['PlayerController']
+  self:NewLevel()
 end
 
 function StatePlay:NewLevel()
   local levelNum = self.level ~= nil and self.level.num ~= nil and self.level.num + 1 or 1
-  self.level = Level(levelNum)
+  self.level = Level(self.player, levelNum)
   self.hud = HUD(levelNum, self.points)
 end
 
