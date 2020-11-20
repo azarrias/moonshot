@@ -63,6 +63,7 @@ function Level:CreateEnemy(type_id, pos)
   
   local enemyController = enemy:AddScript('EnemyController')
   enemyController.cameraSpeedX = self.bgSky.cameraSpeedX
+  enemyController.speed_y = enemy.position.y < VIRTUAL_SIZE.y / 2 and enemyController.speed_x or -enemyController.speed_x
   
   local collider = tiny.Collider(colliderCenter, colliderSize)
   enemy:AddComponent(collider)

@@ -4,14 +4,15 @@ function EnemyController:init()
   tiny.Script.init(self, 'EnemyController')
   self.cameraOffsetX = 0
   self.cameraSpeedX = nil
-  self.speed = 100
+  self.speed_x = 100
 end
 
 function EnemyController:update(dt)
   local position = self.entity.position
   self.cameraOffsetX = self.cameraOffsetX + self.cameraSpeedX * dt
   
-  if self.cameraOffsetX + VIRTUAL_SIZE.x + ENEMY_TYPE_2_SIZE.x / 2 > position.x then
-    position.x = position.x - self.speed * dt
+  position.x = position.x - self.speed_x * dt
+  if position.x - self.cameraOffsetX < VIRTUAL_SIZE.x / 2 then
+    position.y = position.y + self.speed_y * 0.5 * dt
   end
 end
