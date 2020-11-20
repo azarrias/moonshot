@@ -32,15 +32,15 @@ require 'StateVictory'
 require 'SkyLayer'
 require 'util'
 
--- data
-require 'data.levels'
-
 -- pixels resolution
 WINDOW_SIZE = tiny.Vector2D(1920, 1080) -- 16:9 aspect ratio
 VIRTUAL_SIZE = tiny.Vector2D(640, 360)
---PLAYER_SIZE = tiny.Vector2D(16, 10)
 PLAYER_SIZE = tiny.Vector2D(30, 37)
-ENEMY_SIZE = tiny.Vector2D(29, 31)
+ENEMY_TYPE_1_SIZE = tiny.Vector2D(29, 31)
+ENEMY_TYPE_2_SIZE = tiny.Vector2D(42, 34)
+
+-- data
+require 'data.levels'
 
 -- resources
 FONTS = {
@@ -50,7 +50,8 @@ FONTS = {
 
 TEXTURES = {
   ['player'] = love.graphics.newImage('graphics/player.png'),
-  ['enemy'] = love.graphics.newImage('graphics/enemy_1.png')
+  ['enemy_1'] = love.graphics.newImage('graphics/enemy_1.png'),
+  ['enemy_2'] = love.graphics.newImage('graphics/enemy_2.png')
 }
 
 QUADS = {
@@ -61,5 +62,6 @@ QUADS = {
   ['player-left'] = GenerateQuads(TEXTURES['player'], 1, 4, PLAYER_SIZE, tiny.Vector2D(330, 0)),
   ['player-up'] = GenerateQuads(TEXTURES['player'], 1, 2, PLAYER_SIZE, tiny.Vector2D(450, 0)),
   ['player-down'] = GenerateQuads(TEXTURES['player'], 1, 2, PLAYER_SIZE, tiny.Vector2D(510, 0)),
-  ['enemy-moving'] = GenerateQuads(TEXTURES['enemy'], 1, 6, ENEMY_SIZE)
+  ['enemy_1-moving'] = GenerateQuads(TEXTURES['enemy_1'], 1, 6, ENEMY_TYPE_1_SIZE),
+  ['enemy_2-moving'] = GenerateQuads(TEXTURES['enemy_2'], 1, 6, ENEMY_TYPE_2_SIZE)
 }
