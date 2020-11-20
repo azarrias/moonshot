@@ -80,6 +80,6 @@ function love.draw()
     love.graphics.setColor(1, 0, 0)
   end
   love.graphics.setFont(FONTS['retroville-s'])
-  love.graphics.printf("FPS: " .. fps, 0, 5, VIRTUAL_SIZE.x - 5, 'right')
+  love.graphics.printf("FPS: " .. fps, 0, VIRTUAL_SIZE.y - 5 - love.graphics.getFont():getHeight(), VIRTUAL_SIZE.x - 5, 'right')
   push:finish()
 end

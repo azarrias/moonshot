@@ -10,6 +10,9 @@ function PlayerController:init()
   self.laserBeamDuration = 0.8
   self.laserBeamCooldown = 1.5
   self.canShootLaser = true
+  
+  self.hp = 3
+  self.hud = nil
 end
 
 function PlayerController:update(dt)
@@ -87,4 +90,9 @@ function PlayerController:update(dt)
     self.laserBeamShader:send("time", love.timer.getTime() - self.laserBeamStartTime)
     self.laserBeamShader:send("position", { position.x + 42, position.y + 1 })
   end
+end
+
+function PlayerController:TakeDamage(value)
+  self.hp = self.hp - value
+  self.hud.hp = self.hp
 end

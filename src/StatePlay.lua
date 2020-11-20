@@ -12,7 +12,8 @@ end
 function StatePlay:NewLevel()
   local levelNum = self.level ~= nil and self.level.num ~= nil and self.level.num + 1 or 1
   self.level = Level(self.player, levelNum)
-  self.hud = HUD(levelNum, self.points)
+  self.hud = HUD(self.playerController, levelNum, self.points)
+  self.playerController.hud = self.hud
 end
 
 function StatePlay:enter()

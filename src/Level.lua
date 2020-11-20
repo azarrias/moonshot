@@ -15,6 +15,7 @@ function Level:init(player, levelNum)
   end
   
   self.player = player
+  self.playerController = self.player.components['Script']['PlayerController']
 end
 
 function Level:update(dt)
@@ -32,6 +33,7 @@ function Level:update(dt)
     if self.enemies[k].components['Collider'] then
       if self.player.components['Collider'][1]:Collides(self.enemies[k].components['Collider'][1]) then
         table.remove(self.enemies, k)
+        self.playerController:TakeDamage(1)
       end
     end
   end
