@@ -4,11 +4,14 @@ function PlayerController:init()
   tiny.Script.init(self, 'PlayerController')
   self.speed = 200
   
+  self.gunshots = {}
+  self.gunCooldown = 0.2
   self.laserBeamShader = love.graphics.newShader("shaders/laser_beam.fs")
   self.laserBeamShader:send("resolution", { VIRTUAL_SIZE.x, VIRTUAL_SIZE.y })
   self.laserBeamStartTime = nil
   self.laserBeamDuration = 0.8
   self.laserBeamCooldown = 1.5
+  self.canShootGun = true
   self.canShootLaser = true
   
   self.hp = 3
@@ -35,7 +38,15 @@ function PlayerController:update(dt)
   playerAnimatorController:SetValue('MoveLeft', isDownLeft)
   playerAnimatorController:SetValue('MoveRight', isDownRight)
   
-  if love.keyboard.keysPressed['space'] and self.canShootLaser then
+  if love.keyboard.keysPressed['space'] and self.canShootGun then
+    self.canShootGun = false
+    playerAnimatorController:SetTrigger('Shoot')
+    self:FireGun(position)
+    Timer.after(self.gunCooldown,
+      function() self.canShootGun = true end)
+  end
+  
+  if love.keyboard.keysPressed['m'] and self.canShootLaser then
     self.laserBeamStartTime = love.timer.getTime()
     self.canShootLaser = false
     playerAnimatorController:SetTrigger('Shoot')
@@ -90,9 +101,18 @@ function PlayerController:update(dt)
     self.laserBeamShader:send("time", love.timer.getTime() - self.laserBeamStartTime)
     self.laserBeamShader:send("position", { position.x + 42, position.y + 1 })
   end
+  
+  for k, gunshot in ipairs(self.gunshots) do
+    gunshot:update(dt)
+  end
 end
 
 function PlayerController:TakeDamage(value)
   self.hp = self.hp - value
   self.hud.hp = self.hp
+end
+
+function PlayerController:FireGun()
+  local gunshot = Gunshot(self.entity.position + tiny.Vector2D(16, 1))
+  table.insert(self.gunshots, gunshot)
 end

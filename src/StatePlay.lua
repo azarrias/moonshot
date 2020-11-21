@@ -46,6 +46,9 @@ function StatePlay:render()
     love.graphics.rectangle('fill', 0, 0, VIRTUAL_SIZE.x * 5, VIRTUAL_SIZE.y)
     love.graphics.setShader()
   end
+  for k, gunshot in ipairs(self.playerController.gunshots) do
+    gunshot:render()
+  end
 end
 
 function StatePlay:CreatePlayer()
