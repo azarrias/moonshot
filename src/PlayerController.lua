@@ -16,6 +16,8 @@ function PlayerController:init()
   
   self.hp = 3
   self.hud = nil
+
+  self.invulnerable = false
 end
 
 function PlayerController:update(dt)
@@ -107,12 +109,19 @@ function PlayerController:update(dt)
   end
 end
 
-function PlayerController:TakeDamage(value)
-  self.hp = self.hp - value
-  self.hud.hp = self.hp
-end
-
 function PlayerController:FireGun()
   local gunshot = Gunshot(self.entity.position + tiny.Vector2D(16, 1))
   table.insert(self.gunshots, gunshot)
+end
+
+function PlayerController:MakeInvulnerable(duration)
+  self.invulnerable = true
+  Timer.after(duration, 
+    function() self.invulnerable = false end)
+end
+
+function PlayerController:TakeDamage(value)
+  self.hp = self.hp - value
+  self.hud.hp = self.hp
+  self:MakeInvulnerable(1.5)
 end

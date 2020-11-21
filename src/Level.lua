@@ -29,11 +29,13 @@ function Level:update(dt)
   
   -- check for collisions between player and enemies
   -- iterate backwards for safe removal
-  for k = #self.enemies, 1, -1 do
-    if self.enemies[k].components['Collider'] then
-      if self.player.components['Collider'][1]:Collides(self.enemies[k].components['Collider'][1]) then
-        table.remove(self.enemies, k)
-        self.playerController:TakeDamage(1)
+  if not self.playerController.invulnerable then
+    for k = #self.enemies, 1, -1 do
+      if self.enemies[k].components['Collider'] then
+        if self.player.components['Collider'][1]:Collides(self.enemies[k].components['Collider'][1]) then
+          table.remove(self.enemies, k)
+          self.playerController:TakeDamage(1)
+        end
       end
     end
   end
