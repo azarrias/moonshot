@@ -37,6 +37,17 @@ function Level:update(dt)
       end
     end
   end
+  
+  -- check for collisions between gunshots and enemies
+  for i = #self.playerController.gunshots, 1, -1 do
+    for j = #self.enemies, 1, -1 do
+      if self.playerController.gunshots[i].entity.components['Collider'][1]:Collides(self.enemies[j].components['Collider'][1]) then
+        table.remove(self.enemies, j)
+        table.remove(self.playerController.gunshots, i)
+        break
+      end
+    end
+  end
 end
 
 function Level:render()
