@@ -18,6 +18,7 @@ function PlayerController:init()
   self.hud = nil
 
   self.invulnerable = false
+  self.flashingInterval = 0.1
 end
 
 function PlayerController:update(dt)
@@ -116,8 +117,30 @@ end
 
 function PlayerController:MakeInvulnerable(duration)
   self.invulnerable = true
-  Timer.after(duration, 
-    function() self.invulnerable = false end)
+  local flashing = true
+  local sprite = self.entity.components['Sprite']
+  
+  -- make the player's sprite flash when it is invulnerable
+  Timer.every(self.flashingInterval, 
+    function() 
+      flashing = not flashing
+      if sprite then
+        if flashing then
+          Timer.tween(self.flashingInterval, {
+            [sprite.color] = { 1, 1, 1, 1 }
+          })
+        else
+          Timer.tween(self.flashingInterval, {
+            [sprite.color] = { 1, 1, 1, 64 / 255 }
+          })         
+        end
+      end
+    end)
+    :finish(function() 
+              self.invulnerable = false 
+              sprite.color = { 1, 1, 1, 1 }
+            end)
+    :limit(math.floor(duration / self.flashingInterval))
 end
 
 function PlayerController:TakeDamage(value)

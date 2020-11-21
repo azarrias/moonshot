@@ -2,7 +2,7 @@
     constants
   ]]
 GAME_TITLE = 'Moonshot'
-DEBUG_MODE = true
+DEBUG_MODE = false
 
 -- OS checks in order to make necessary adjustments to support multiplatform
 MOBILE_OS = (love._version_major > 0 or love._version_minor >= 9) and (love.system.getOS() == 'Android' or love.system.getOS() == 'OS X')
@@ -16,11 +16,6 @@ Timer = require 'libs.knife.timer'
 tiny = require 'libs.tiny'
 
 -- general purpose / utility
---require 'BehaviourPlayerMovingDown'
---require 'BehaviourPlayerMovingLeft'
---require 'BehaviourPlayerMovingRight'
---require 'BehaviourPlayerMovingUp'
---require 'BehaviourPlayerShooting'
 require 'EnemyController'
 require 'Gunshot'
 require 'HUD'
