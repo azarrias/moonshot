@@ -5,7 +5,7 @@ function PlayerController:init()
   self.speed = 200
   
   self.gunshots = {}
-  self.gunCooldown = 0.2
+  self.gunCooldown = 0.3
   self.laserBeamShader = love.graphics.newShader("shaders/laser_beam.fs")
   self.laserBeamShader:send("resolution", { VIRTUAL_SIZE.x, VIRTUAL_SIZE.y })
   self.laserBeamStartTime = nil

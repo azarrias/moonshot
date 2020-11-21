@@ -74,7 +74,7 @@ function StatePlay:CreatePlayer()
   -- create state machine states (first state to be created will be the default state)
   local idleFrameDuration = 0.2
   local movingFrameDuration = 0.2
-  local shootingFrameDuration = 0.2
+  local shootingFrameDuration = 0.1
   local stateIdle = animatorController:AddAnimation('Idle')
   stateIdle.animation:AddFrame(TEXTURES['player'], QUADS['player-idle'][1], idleFrameDuration)
   stateIdle.animation:AddFrame(TEXTURES['player'], QUADS['player-idle'][2], idleFrameDuration)

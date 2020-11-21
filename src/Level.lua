@@ -38,8 +38,14 @@ function Level:update(dt)
     end
   end
   
-  -- check for collisions between gunshots and enemies
   for i = #self.playerController.gunshots, 1, -1 do
+    -- destroy them once they get out of bounds
+    if self.playerController.gunshots[i].entity.position.x > VIRTUAL_SIZE.x then
+      table.remove(self.playerController.gunshots, i)
+      break
+    end
+    
+    -- check for collisions between gunshots and enemies
     for j = #self.enemies, 1, -1 do
       if self.playerController.gunshots[i].entity.components['Collider'][1]:Collides(self.enemies[j].components['Collider'][1]) then
         table.remove(self.enemies, j)
