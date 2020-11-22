@@ -19,9 +19,15 @@ function PlayerController:init()
 
   self.invulnerable = false
   self.flashingInterval = 0.1
+  
+  self.canInput = true
 end
 
 function PlayerController:update(dt)
+  if not self.canInput then
+    return
+  end
+  
   local position = self.entity.position
   local upper_bound = math.floor(PLAYER_SIZE.y / 2 + VIRTUAL_SIZE.y / 20)
   local lower_bound = math.floor(VIRTUAL_SIZE.y - PLAYER_SIZE.y / 2 - VIRTUAL_SIZE.y / 20)
@@ -146,5 +152,9 @@ end
 function PlayerController:TakeDamage(value)
   self.hp = self.hp - value
   self.hud.hp = self.hp
-  self:MakeInvulnerable(1.5)
+  if self.hp <= 0 then
+    gameManager:Push(StateGameOver())
+  else
+    self:MakeInvulnerable(1.5)
+  end
 end
