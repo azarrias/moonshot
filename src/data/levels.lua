@@ -2,7 +2,7 @@
 LEVELS = {
   [1] = {
     hasBoss = false,
-    finalXPos = 700,
+    finalXPos = 600,
     enemies = { { type_id = 1, position = tiny.Vector2D(1000, VIRTUAL_SIZE.y * 0.5) },
                 { type_id = 1, position = tiny.Vector2D(1050, VIRTUAL_SIZE.y * 0.33) },
                 { type_id = 1, position = tiny.Vector2D(1100, VIRTUAL_SIZE.y * 0.66) },

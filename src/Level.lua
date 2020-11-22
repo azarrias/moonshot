@@ -17,7 +17,7 @@ function Level:init(player, levelNum)
   self.player = player
   self.playerController = self.player.components['Script']['PlayerController']
   self.playerController.canInput = false
-  self.player.position.x = -PLAYER_SIZE.x
+  self.player.position = tiny.Vector2D(-PLAYER_SIZE.x, VIRTUAL_SIZE.y / 2)
   Timer.after(1, function()
     Timer.tween(1, {
       [self.player.position] = { x = PLAYER_SIZE.x * 2 }

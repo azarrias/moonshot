@@ -23,16 +23,23 @@ function StatePlay:update(dt)
   self.level:update(dt)
   self.hud:update(dt)
   self.player:update(dt)
-  if love.keyboard.keysPressed['p'] then
-    print(self.level.bgSky.cameraOffsetX)
-  end
   
   -- use the x camera offset of the background sky layer to check if level was cleared
   if self.level.bgSky.cameraOffsetX > self.level.data.finalXPos then
+    local pixelsPerSecond = 120
+    local duration = (VIRTUAL_SIZE.x + PLAYER_SIZE.x - self.player.position.x) / pixelsPerSecond
+    self.playerController.canInput = false
+    Timer.after(1, function()
+      self.player.components['AnimatorController']:SetValue('MoveRight', true)
+      Timer.tween(duration, {
+        [self.player.position] = { x = VIRTUAL_SIZE.x + PLAYER_SIZE.x }
+      })
+      :finish(function() self.player.components['AnimatorController']:SetValue('MoveRight', false) end)
+    end)
     if LEVELS[self.level.num + 1] ~= nil then
-      gameManager:Push(StateLevelClear(self))
+      gameManager:Push(StateLevelClear(self, 1 + duration))
     else
-      gameManager:Push(StateVictory(self))
+      gameManager:Push(StateVictory(self, 1 + duration))
     end
   end
 end
