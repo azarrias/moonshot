@@ -2,7 +2,7 @@ StatePlay = Class{__includes=tiny.State}
 
 function StatePlay:init()
   self.hud = nil
-  self.points = 0
+  --self.points = 0
   self.level = nil
   self.player = self:CreatePlayer()
   self.playerController = self.player.components['Script']['PlayerController']
@@ -12,7 +12,7 @@ end
 function StatePlay:NewLevel()
   local levelNum = self.level ~= nil and self.level.num ~= nil and self.level.num + 1 or 1
   self.level = Level(self.player, levelNum)
-  self.hud = HUD(self.playerController, levelNum, self.points)
+  self.hud = HUD(self.playerController, levelNum, self.playerController.points)
   self.playerController.hud = self.hud
 end
 
@@ -108,13 +108,6 @@ function StatePlay:CreatePlayer()
   stateMovingDown.animation:AddFrame(TEXTURES['player'], QUADS['player-down'][1], movingFrameDuration)
   stateMovingDown.animation:AddFrame(TEXTURES['player'], QUADS['player-down'][2], movingFrameDuration)
 
-  -- animation states behaviours
-  --stateMovingLeft:AddStateMachineBehaviour('BehaviourPlayerMovingLeft')
-  --stateMovingRight:AddStateMachineBehaviour('BehaviourPlayerMovingRight')
-  --stateMovingUp:AddStateMachineBehaviour('BehaviourPlayerMovingUp')
-  --stateMovingDown:AddStateMachineBehaviour('BehaviourPlayerMovingDown')
-  --stateShooting:AddStateMachineBehaviour('BehaviourPlayerShooting')
-  
   -- transitions and conditions
   local anyToShootingTransition = animatorController.stateMachine:AddAnyStateTransition(stateShooting)
   anyToShootingTransition:AddCondition('Shoot', tiny.AnimatorConditionOperatorType.Equals, true)

@@ -15,6 +15,7 @@ function PlayerController:init()
   self.canShootLaser = true
   
   self.hp = 3
+  self.points = 0
   self.hud = nil
 
   self.invulnerable = false
@@ -62,31 +63,16 @@ function PlayerController:update(dt)
         function() self.canShootLaser = true end)
     end
   
-    if not love.keyboard.isDown('down') and not love.keyboard.isDown('up') then
-      --if self.current_quad_id ~= 2 then
-      --  self.entity.components['Sprite']:SetDrawable(TEXTURES['player'], QUADS['player'][2])
-      --  self.current_quad_id = 2
-      --end
-    else
-      if love.keyboard.isDown('down') then
-        position.y = position.y + self.speed * dt
-      --  if self.current_quad_id ~= 3 then
-      --    self.entity.components['Sprite']:SetDrawable(TEXTURES['player'], QUADS['player'][3])
-      --    self.current_quad_id = 3
-      --  end
-        if position.y >= lower_bound then
-          position.y = lower_bound
-        end
+    if love.keyboard.isDown('down') then
+      position.y = position.y + self.speed * dt
+      if position.y >= lower_bound then
+        position.y = lower_bound
       end
-      if love.keyboard.isDown('up') then
-        position.y = position.y - self.speed * dt
-      --  if self.current_quad_id ~= 1 then
-      --    self.entity.components['Sprite']:SetDrawable(TEXTURES['player'], QUADS['player'][1])
-      --    self.current_quad_id = 1
-      --  end
-        if position.y <= upper_bound then
-          position.y = upper_bound
-        end
+    end
+    if love.keyboard.isDown('up') then
+      position.y = position.y - self.speed * dt
+      if position.y <= upper_bound then
+        position.y = upper_bound
       end
     end
     if love.keyboard.isDown('right') then
@@ -150,4 +136,9 @@ end
 function PlayerController:TakeDamage(value)
   self.hp = self.hp - value
   self.hud.hp = self.hp
+end
+
+function PlayerController:GetPoints(points)
+  self.points = self.points + points
+  self.hud.points = self.points
 end

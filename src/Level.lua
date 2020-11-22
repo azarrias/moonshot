@@ -71,6 +71,7 @@ function Level:update(dt)
       if self.playerController.gunshots[i].entity.components['Collider'][1]:Collides(self.enemies[j].components['Collider'][1]) then
         table.remove(self.enemies, j)
         table.remove(self.playerController.gunshots, i)
+        self.playerController:GetPoints(1)
         break
       end
     end
