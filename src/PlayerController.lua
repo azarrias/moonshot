@@ -152,9 +152,4 @@ end
 function PlayerController:TakeDamage(value)
   self.hp = self.hp - value
   self.hud.hp = self.hp
-  if self.hp <= 0 then
-    gameManager:Push(StateGameOver())
-  else
-    self:MakeInvulnerable(1.5)
-  end
 end

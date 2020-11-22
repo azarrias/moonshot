@@ -43,6 +43,11 @@ function Level:update(dt)
         if self.player.components['Collider'][1]:Collides(self.enemies[k].components['Collider'][1]) then
           table.remove(self.enemies, k)
           self.playerController:TakeDamage(1)
+          if self.playerController.hp <= 0 then
+            gameManager:Push(StateGameOver(self))
+          else
+            self.playerController:MakeInvulnerable(1.5)
+          end
         end
       end
     end

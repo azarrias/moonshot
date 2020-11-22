@@ -32,7 +32,7 @@ function StatePlay:update(dt)
     if LEVELS[self.level.num + 1] ~= nil then
       gameManager:Push(StateLevelClear(self))
     else
-      gameManager:Push(StateVictory(self.points))
+      gameManager:Push(StateVictory(self))
     end
   end
 end
