@@ -16,6 +16,12 @@ function Level:init(player, levelNum)
   
   self.player = player
   self.playerController = self.player.components['Script']['PlayerController']
+  self.player.position.x = -PLAYER_SIZE.x
+  Timer.after(1, function()
+    Timer.tween(1, {
+      [self.player.position] = { x = PLAYER_SIZE.x * 2 }
+    })
+  end)
 end
 
 function Level:update(dt)
