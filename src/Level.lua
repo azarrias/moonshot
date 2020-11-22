@@ -44,7 +44,13 @@ function Level:update(dt)
           table.remove(self.enemies, k)
           self.playerController:TakeDamage(1)
           if self.playerController.hp <= 0 then
-            gameManager:Push(StateGameOver(self))
+            local playerFadeOutDuration = 5
+            gameManager:Push(StateGameOver(self, playerFadeOutDuration))
+            self.playerController.invulnerable = true
+            local sprite = self.player.components['Sprite']
+            Timer.tween(playerFadeOutDuration, {
+              [sprite.color] = { 1, 1, 1, 0 }
+            })
           else
             self.playerController:MakeInvulnerable(1.5)
           end
