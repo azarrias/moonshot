@@ -28,13 +28,14 @@ function StatePlay:update(dt)
   if self.level.bgSky.cameraOffsetX > self.level.data.finalXPos then
     local pixelsPerSecond = 120
     local duration = (VIRTUAL_SIZE.x + PLAYER_SIZE.x - self.player.position.x) / pixelsPerSecond
+    local animatorController = self.player.components['AnimatorController']
     self.playerController.canInput = false
     Timer.after(1, function()
-      self.player.components['AnimatorController']:SetValue('MoveRight', true)
+      animatorController.stateMachine.currentState = animatorController.stateMachine.states['MovingRight']
       Timer.tween(duration, {
         [self.player.position] = { x = VIRTUAL_SIZE.x + PLAYER_SIZE.x }
       })
-      :finish(function() self.player.components['AnimatorController']:SetValue('MoveRight', false) end)
+      :finish(function() animatorController.stateMachine.currentState = animatorController.stateMachine.states['Idle'] end)
     end)
     if LEVELS[self.level.num + 1] ~= nil then
       gameManager:Push(StateLevelClear(self, 1 + duration))
