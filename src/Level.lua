@@ -18,7 +18,18 @@ function Level:init(player, levelNum)
   self.playerController = self.player.components['Script']['PlayerController']
   self.playerController.canInput = false
   self.player.position = tiny.Vector2D(-PLAYER_SIZE.x, VIRTUAL_SIZE.y / 2)
-  Timer.after(1, function()
+  
+  -- level transitions
+  self.fadeInDuration = 2
+  self.fadeIn = Fade({0, 0, 0, 1}, {0, 0, 0, 0}, self.fadeInDuration,
+    function() 
+      self.fadeIn = nil
+    end)
+  
+  self.fadeOutDuration = 1
+  self.fadeOut = nil
+  
+  Timer.after(self.fadeInDuration + 1, function()
     Timer.tween(1, {
       [self.player.position] = { x = PLAYER_SIZE.x * 2 }
     })
@@ -85,6 +96,10 @@ function Level:render()
   
   for k, enemy in ipairs(self.enemies) do
     enemy:render()
+  end
+  
+  if self.fadeIn then
+    self.fadeIn:render()
   end
 end
 
