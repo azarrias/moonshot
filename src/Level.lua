@@ -28,12 +28,15 @@ function Level:init(player, levelNum)
   
   self.fadeOutDuration = 1
   self.fadeOut = nil
-  
+   
   Timer.after(self.fadeInDuration + 1, function()
     Timer.tween(1, {
       [self.player.position] = { x = PLAYER_SIZE.x * 2 }
     })
-    :finish(function() self.playerController.canInput = true end)
+    :finish(function() 
+              gameManager:Push(StateDialogue("Hi! this is only a test.\nSo, does everything display properly?\nIf pagination works, I will sleep better tonight.", function() end))
+              self.playerController.canInput = true 
+            end)
   end)
 end
 
