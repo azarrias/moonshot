@@ -21,7 +21,10 @@ function StateDialogue:update(dt)
     local sprite = self.avatar.components['Sprite']
     self.destroying = true
     Timer.tween(avatarFadeOutDuration, {
-      [sprite.color] = { 1, 1, 1, 0 }
+      [sprite.color] = { 1, 1, 1, 0 },
+      [self.textbox.triangleColor] = { 1, 1, 1, 0 },
+      [self.textbox.panel.borderColor] = { 0, 0, 0, 0 },
+      [self.textbox.panel.bodyColor] = { 0, 0, 0, 0 }
     })
     :finish(function()
       self.callback()

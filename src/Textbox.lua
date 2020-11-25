@@ -6,7 +6,6 @@ function Textbox:init(x, y, width, height, text, font)
   leftMargin = 12
   upMargin = 8
   self.panel = Panel(x, y, width, height)
-  --self.enterSprite = TEXTURES['gui-enter']
   self.x = x
   self.y = y
   self.width = width
@@ -19,7 +18,12 @@ function Textbox:init(x, y, width, height, text, font)
   self.chunkCounter = 1
   self.endOfText = false
   self.closed = false
-  --self.renderArrow = true
+  
+  self.drawTriangleOutline = true
+  Timer.every(0.5, function()
+    self.drawTriangleOutline = not self.drawTriangleOutline
+  end)
+  self.triangleColor = { 1, 1, 1, 1 }
   
   self:next()
 end
@@ -46,7 +50,7 @@ end
 function Textbox:next()
   if self.endOfText then
     self.displayingChunks = {}
-    self.panel:toggle()
+    --self.panel:toggle()
     self.closed = true
   else
     self.displayingChunks = self:nextChunks()
@@ -72,7 +76,15 @@ function Textbox:render()
     love.graphics.print(self.displayingChunks[i], self.x + leftMargin, self.y + upMargin + (i - 1) * self.font:getHeight())
   end
   
-  if self.renderArrow then
-    love.graphics.draw(self.enterSprite, self.x + self.width - 1.5 * leftMargin, self.y + self.height - 1.5 * upMargin)
+  -- render triangle to indicate required key press to advance to the next text box
+  love.graphics.setColor(self.triangleColor)
+  love.graphics.setLineWidth(1.5)
+  if self.drawTriangleOutline then
+    love.graphics.polygon('line', math.floor(self.x + self.width - 2 * leftMargin), math.floor(self.y + self.height - 0.5 * upMargin), 
+      math.floor(self.x + self.width - 1 * leftMargin), math.floor(self.y + self.height - 0.5 * upMargin),
+      math.floor(self.x + self.width - 1.5 * leftMargin), math.floor(self.y + self.height + 0.5 * upMargin))
   end
+  love.graphics.polygon('fill', math.floor(self.x + self.width - 2 * leftMargin), math.floor(self.y + self.height - 0.5 * upMargin), 
+    math.floor(self.x + self.width - 1 * leftMargin), math.floor(self.y + self.height - 0.5 * upMargin),
+    math.floor(self.x + self.width - 1.5 * leftMargin), math.floor(self.y + self.height + 0.5 * upMargin))
 end

@@ -5,6 +5,8 @@ function Panel:init(x, y, width, height)
   self.y = y
   self.width = width
   self.height = height
+  self.borderColor = {1, 1, 1, 1}
+  self.bodyColor = {56 / 255, 56 / 255, 56 / 255, 1}
   
   self.visible = true
 end
@@ -14,9 +16,9 @@ end
 
 function Panel:render()
   if self.visible then
-    love.graphics.setColor(1, 1, 1, 1)
+    love.graphics.setColor(self.borderColor)
     love.graphics.rectangle('fill', self.x, self.y, self.width, self.height, 3)
-    love.graphics.setColor(56 / 255, 56 / 255, 56 / 255, 1)
+    love.graphics.setColor(self.bodyColor)
     love.graphics.rectangle('fill', self.x + 2, self.y + 2, self.width - 4, self.height - 4, 3)
     love.graphics.setColor(1, 1, 1, 1)
   end
