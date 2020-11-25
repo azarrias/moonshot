@@ -35,7 +35,10 @@ function Level:init(player, levelNum)
     })
     :finish(function() 
               if self.data.dialogue then
-                gameManager:Push(StateDialogue(self.data.dialogue, function() end))
+                -- push in reverse order, since it is a stack based FSM
+                for k = #self.data.dialogue, 1, -1 do
+                  gameManager:Push(StateDialogue(self.data.dialogue[k].speaker, self.data.dialogue[k].message, function() end))
+                end
               end
               self.playerController.canInput = true 
             end)
@@ -111,7 +114,7 @@ end
 function Level:CreateEnemy(type_id, pos)
   local enemy = tiny.Entity(pos.x, pos.y)
   
-  -- variables that depend on the type of enemy
+  -- variables that depend on the type of enemy (sprite)
   local enemySize = ENEMY_TYPE_1_SIZE
   if type_id == 2 then
     enemySize = ENEMY_TYPE_2_SIZE
@@ -134,12 +137,19 @@ function Level:CreateEnemy(type_id, pos)
   enemyController.cameraSpeedX = self.bgSky.cameraSpeedX
   enemyController.speed_y = enemy.position.y < VIRTUAL_SIZE.y / 2 and enemyController.speed_x or -enemyController.speed_x
   
+  if self.data.movement then
+    enemyController.movement = self.data.movement
+  else
+    enemyController.movement = 'straight'
+  end
+  
   local collider = tiny.Collider(colliderCenter, colliderSize)
   enemy:AddComponent(collider)
   
   -- create animator controller and setup parameters
   local animatorController = tiny.AnimatorController('EnemyAnimatorController')
   enemy:AddComponent(animatorController)
+  
   --animatorController:AddParameter('MoveDown', tiny.AnimatorControllerParameterType.Bool)
   --animatorController:AddParameter('MoveUp', tiny.AnimatorControllerParameterType.Bool)
   --animatorController:AddParameter('MoveLeft', tiny.AnimatorControllerParameterType.Bool)

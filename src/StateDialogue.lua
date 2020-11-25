@@ -1,6 +1,6 @@
 StateDialogue = Class{__includes = tiny.State}
 
-function StateDialogue:init(text, callback)
+function StateDialogue:init(speaker, text, callback)
   self.size = tiny.Vector2D(0.7 * VIRTUAL_SIZE.x, 0.2 * VIRTUAL_SIZE.y):Floor()
   self.leftMargin = math.floor((VIRTUAL_SIZE.x - self.size.x) / 2)
   self.bottomMargin = VIRTUAL_SIZE.y * 0.1
@@ -8,6 +8,9 @@ function StateDialogue:init(text, callback)
   self.avatar = self:CreateAvatar()
   self.textbox = Textbox(self.leftMargin + self.avatarSize.x, VIRTUAL_SIZE.y - self.size.y - self.bottomMargin, 
     VIRTUAL_SIZE.x - self.leftMargin * 2 - self.avatarSize.x, self.size.y, text, FONTS['retroville-s'])
+  self.speaker = speaker
+  self.speakerTabBorderColor = self.textbox.panel.borderColor
+  self.speakerTabBodyColor = self.textbox.panel.bodyColor  
   self.callback = callback or function() end
   self.destroying = false
 end
@@ -36,6 +39,19 @@ end
 function StateDialogue:render()
   self.textbox:render()
   self.avatar:render()
+  
+  -- draw tab with the name of the speaker
+  love.graphics.setColor(self.textbox.panel.borderColor)
+  love.graphics.rectangle('fill', self.textbox.x + 30, self.textbox.y - 20, 100, 22, 3)
+  love.graphics.setColor(self.textbox.panel.borderColor)
+  love.graphics.rectangle('fill', self.textbox.x + 30 + 2, self.textbox.y - 20 + 2, 100 - 4, 22, 3)
+  
+  if not self.textbox.closed then  
+    love.graphics.setFont(FONTS['retroville-s'])
+    love.graphics.setColor(0.4, 0.3, 0.2, 1)
+    love.graphics.print(self.speaker, self.textbox.x + 30 + 2 + 10, self.textbox.y - 20 + 2 + 3)
+  end
+  
   love.graphics.setColor(1, 1, 1, 1)
 end
 
