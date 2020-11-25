@@ -52,7 +52,8 @@ FONTS = {
 TEXTURES = {
   ['player'] = love.graphics.newImage('graphics/player.png'),
   ['enemy_1'] = love.graphics.newImage('graphics/enemy_1.png'),
-  ['enemy_2'] = love.graphics.newImage('graphics/enemy_2.png')
+  ['enemy_2'] = love.graphics.newImage('graphics/enemy_2.png'),
+  ['boss'] = love.graphics.newImage('graphics/boss-102.png')
 }
 
 QUADS = {

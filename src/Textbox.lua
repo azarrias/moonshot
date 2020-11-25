@@ -3,7 +3,7 @@ Textbox = Class{}
 local leftMargin, upMargin
 
 function Textbox:init(x, y, width, height, text, font)
-  leftMargin = 8
+  leftMargin = 12
   upMargin = 8
   self.panel = Panel(x, y, width, height)
   --self.enterSprite = TEXTURES['gui-enter']
