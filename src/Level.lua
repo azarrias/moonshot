@@ -34,7 +34,9 @@ function Level:init(player, levelNum)
       [self.player.position] = { x = PLAYER_SIZE.x * 2 }
     })
     :finish(function() 
-              gameManager:Push(StateDialogue("Hi! this is only a test.\nSo, does everything display properly?\nIf pagination works, I will sleep better tonight.", function() end))
+              if self.data.dialogue then
+                gameManager:Push(StateDialogue(self.data.dialogue, function() end))
+              end
               self.playerController.canInput = true 
             end)
   end)
