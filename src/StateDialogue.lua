@@ -4,10 +4,23 @@ function StateDialogue:init(speaker, text, callback)
   self.size = tiny.Vector2D(0.7 * VIRTUAL_SIZE.x, 0.2 * VIRTUAL_SIZE.y):Floor()
   self.leftMargin = math.floor((VIRTUAL_SIZE.x - self.size.x) / 2)
   self.bottomMargin = VIRTUAL_SIZE.y * 0.1
-  self.avatarSize = tiny.Vector2D(69, 87)
+
   self.avatar = self:CreateAvatar()
-  self.textbox = Textbox(self.leftMargin + self.avatarSize.x, VIRTUAL_SIZE.y - self.size.y - self.bottomMargin, 
-    VIRTUAL_SIZE.x - self.leftMargin * 2 - self.avatarSize.x, self.size.y, text, FONTS['retroville-s'])
+  self.avatarAnimationTimer = Timer.after(0.5, 
+    function()
+      Timer.every(0.2, function()
+      local sprite = self.avatar.components['Sprite']
+      local r = math.random(0, 19)
+      local quad_id = r - 14
+      if r <= 17 then
+        quad_id = math.floor(r / 6) + 1
+      end
+      sprite:SetDrawable(TEXTURES['boss-101'], QUADS['boss-101'][quad_id])
+    end)
+  end)
+
+  self.textbox = Textbox(self.leftMargin + BOSS_AVATAR_SIZE.x, VIRTUAL_SIZE.y - self.size.y - self.bottomMargin, 
+    VIRTUAL_SIZE.x - self.leftMargin * 2 - BOSS_AVATAR_SIZE.x, self.size.y, text, FONTS['retroville-s'])
   self.speaker = speaker
   self.speakerTabBorderColor = self.textbox.panel.borderColor
   self.speakerTabBodyColor = self.textbox.panel.bodyColor  
@@ -22,6 +35,9 @@ function StateDialogue:update(dt)
   if self.textbox:isClosed() and not self.destroying then
     local avatarFadeOutDuration = 0.5
     local sprite = self.avatar.components['Sprite']
+    sprite:SetDrawable(TEXTURES['boss-101'], QUADS['boss-101'][1])
+    self.avatarAnimationTimer:remove()
+    
     self.destroying = true
     Timer.tween(avatarFadeOutDuration, {
       [sprite.color] = { 1, 1, 1, 0 },
@@ -56,31 +72,10 @@ function StateDialogue:render()
 end
 
 function StateDialogue:CreateAvatar()
-  local avatar = tiny.Entity(self.leftMargin + self.avatarSize.x / 2, VIRTUAL_SIZE.y - self.size.y - self.bottomMargin - 10 + self.avatarSize.y / 2)
+  local avatar = tiny.Entity(self.leftMargin + BOSS_AVATAR_SIZE.x / 2, VIRTUAL_SIZE.y - self.size.y - self.bottomMargin - 10 + BOSS_AVATAR_SIZE.y / 2)
   
-  local sprite = tiny.Sprite(TEXTURES['boss-101'])
+  local sprite = tiny.Sprite(TEXTURES['boss-101'], QUADS['boss-101'][1])
   avatar:AddComponent(sprite)
-  
-  -- create animator controller and setup parameters
-  local animatorController = tiny.AnimatorController('AvatarAnimatorController')
-  avatar:AddComponent(animatorController)
-  
-  -- create state machine states (first state to be created will be the default state)
-  local talkingFrameDuration = 0.2
-  local stateTalking = animatorController:AddAnimation('Talking')
-  stateTalking.animation:AddFrame(TEXTURES['boss-101'])
-  stateTalking.animation:AddFrame(TEXTURES['boss-102'])
-  stateTalking.animation:AddFrame(TEXTURES['boss-101'])
-  stateTalking.animation:AddFrame(TEXTURES['boss-102'])
-  stateTalking.animation:AddFrame(TEXTURES['boss-101'])
-  stateTalking.animation:AddFrame(TEXTURES['boss-102'])
-  stateTalking.animation:AddFrame(TEXTURES['boss-101'])
-  stateTalking.animation:AddFrame(TEXTURES['boss-102'])
-  stateTalking.animation:AddFrame(TEXTURES['boss-103'])
-  
-  for k, frame in ipairs(stateTalking.animation.frames) do
-    frame.duration = talkingFrameDuration
-  end
   
   return avatar
 end
