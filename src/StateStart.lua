@@ -7,15 +7,19 @@ function StateStart:init()
   }
   self.fadeOut = nil
   self.fadeOutDuration = 1
+  self.canInput = true
 end
 
 function StateStart:update(dt)
-  if love.keyboard.keysPressed['space'] or love.keyboard.keysPressed['enter'] or love.keyboard.keysPressed['return'] or love.mouse.buttonReleased[1] then
-    self.fadeOut = Fade({0, 0, 0, 0}, {0, 0, 0, 1}, self.fadeOutDuration,
-      function() 
-        gameManager:Pop()
-        gameManager:Push(StatePlay())
-      end)
+  if self.canInput then
+    if love.keyboard.keysPressed['space'] or love.keyboard.keysPressed['enter'] or love.keyboard.keysPressed['return'] or love.mouse.buttonReleased[1] then
+      self.canInput = false
+      self.fadeOut = Fade({0, 0, 0, 0}, {0, 0, 0, 1}, self.fadeOutDuration,
+        function() 
+          gameManager:Pop()
+          gameManager:Push(StatePlay())
+        end)
+    end
   end
 end
 

@@ -4,7 +4,7 @@ local leftMargin, upMargin
 
 function Textbox:init(x, y, width, height, text, font)
   leftMargin = 12
-  upMargin = 8
+  upMargin = 14
   self.panel = Panel(x, y, width, height)
   self.x = x
   self.y = y

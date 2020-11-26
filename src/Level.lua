@@ -11,7 +11,7 @@ function Level:init(player, levelNum)
   
   self.enemies = {}
   for k, e in ipairs(self.data.enemies) do
-    table.insert(self.enemies, self:CreateEnemy(e.type_id, e.position))
+    table.insert(self.enemies, self:CreateEnemy(e.type_id, e.position, e.movement))
   end
   
   self.player = player
@@ -111,7 +111,7 @@ function Level:render()
   end
 end
 
-function Level:CreateEnemy(type_id, pos)
+function Level:CreateEnemy(type_id, pos, movement)
   local enemy = tiny.Entity(pos.x, pos.y)
   
   -- variables that depend on the type of enemy (sprite)
@@ -137,8 +137,8 @@ function Level:CreateEnemy(type_id, pos)
   enemyController.cameraSpeedX = self.bgSky.cameraSpeedX
   enemyController.speed_y = enemy.position.y < VIRTUAL_SIZE.y / 2 and enemyController.speed_x or -enemyController.speed_x
   
-  if self.data.movement then
-    enemyController.movement = self.data.movement
+  if movement then
+    enemyController.movement = movement
   else
     enemyController.movement = 'straight'
   end
