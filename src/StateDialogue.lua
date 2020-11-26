@@ -26,17 +26,21 @@ function StateDialogue:init(speaker, text, callback)
   self.speakerTabBodyColor = self.textbox.panel.bodyColor  
   self.callback = callback or function() end
   self.destroying = false
+  
+  self.running = false
 end
 
 function StateDialogue:update(dt)
+  self.running = true
   self.textbox:update(dt)
   self.avatar:update(dt)
   
+  -- fade out dialogue elements as soon as the textbox closes
   if self.textbox:isClosed() and not self.destroying then
-    local avatarFadeOutDuration = 0.5
+    self.avatarAnimationTimer:remove()
+    local avatarFadeOutDuration = 0.3
     local sprite = self.avatar.components['Sprite']
     sprite:SetDrawable(TEXTURES['boss-101'], QUADS['boss-101'][1])
-    self.avatarAnimationTimer:remove()
     
     self.destroying = true
     Timer.tween(avatarFadeOutDuration, {
@@ -53,22 +57,24 @@ function StateDialogue:update(dt)
 end
 
 function StateDialogue:render()
-  self.textbox:render()
-  self.avatar:render()
-  
-  -- draw tab with the name of the speaker
-  love.graphics.setColor(self.textbox.panel.borderColor)
-  love.graphics.rectangle('fill', self.textbox.x + 30, self.textbox.y - 20, 100, 22, 3)
-  love.graphics.setColor(self.textbox.panel.borderColor)
-  love.graphics.rectangle('fill', self.textbox.x + 30 + 2, self.textbox.y - 20 + 2, 100 - 4, 22, 3)
-  
-  if not self.textbox.closed then  
-    love.graphics.setFont(FONTS['retroville-s'])
-    love.graphics.setColor(0.4, 0.3, 0.2, 1)
-    love.graphics.print(self.speaker, self.textbox.x + 30 + 2 + 10, self.textbox.y - 20 + 2 + 3)
+  if self.running then
+    self.textbox:render()
+    self.avatar:render()
+    
+    -- draw tab with the name of the speaker
+    love.graphics.setColor(self.textbox.panel.borderColor)
+    love.graphics.rectangle('fill', self.textbox.x + 30, self.textbox.y - 20, 100, 22, 3)
+    love.graphics.setColor(self.textbox.panel.borderColor)
+    love.graphics.rectangle('fill', self.textbox.x + 30 + 2, self.textbox.y - 20 + 2, 100 - 4, 22, 3)
+    
+    if not self.textbox.closed then  
+      love.graphics.setFont(FONTS['retroville-s'])
+      love.graphics.setColor(0.4, 0.3, 0.2, 1)
+      love.graphics.print(self.speaker, self.textbox.x + 30 + 2 + 10, self.textbox.y - 20 + 2 + 3)
+    end
+    
+    love.graphics.setColor(1, 1, 1, 1)
   end
-  
-  love.graphics.setColor(1, 1, 1, 1)
 end
 
 function StateDialogue:CreateAvatar()

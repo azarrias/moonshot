@@ -77,14 +77,16 @@ function Textbox:render()
   end
   
   -- render triangle to indicate required key press to advance to the next text box
-  love.graphics.setColor(self.triangleColor)
-  love.graphics.setLineWidth(1.5)
-  if self.drawTriangleOutline then
-    love.graphics.polygon('line', math.floor(self.x + self.width - 2 * leftMargin), math.floor(self.y + self.height - 0.5 * upMargin), 
+  if self.canInput then
+    love.graphics.setColor(self.triangleColor)
+    love.graphics.setLineWidth(1.5)
+    if self.drawTriangleOutline then
+      love.graphics.polygon('line', math.floor(self.x + self.width - 2 * leftMargin), math.floor(self.y + self.height - 0.5 * upMargin), 
+        math.floor(self.x + self.width - 1 * leftMargin), math.floor(self.y + self.height - 0.5 * upMargin),
+        math.floor(self.x + self.width - 1.5 * leftMargin), math.floor(self.y + self.height + 0.5 * upMargin))
+    end
+    love.graphics.polygon('fill', math.floor(self.x + self.width - 2 * leftMargin), math.floor(self.y + self.height - 0.5 * upMargin), 
       math.floor(self.x + self.width - 1 * leftMargin), math.floor(self.y + self.height - 0.5 * upMargin),
       math.floor(self.x + self.width - 1.5 * leftMargin), math.floor(self.y + self.height + 0.5 * upMargin))
   end
-  love.graphics.polygon('fill', math.floor(self.x + self.width - 2 * leftMargin), math.floor(self.y + self.height - 0.5 * upMargin), 
-    math.floor(self.x + self.width - 1 * leftMargin), math.floor(self.y + self.height - 0.5 * upMargin),
-    math.floor(self.x + self.width - 1.5 * leftMargin), math.floor(self.y + self.height + 0.5 * upMargin))
 end

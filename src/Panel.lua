@@ -5,8 +5,8 @@ function Panel:init(x, y, width, height)
   self.y = y
   self.width = width
   self.height = height
-  self.borderColor = {1, 1, 1, 1}
-  self.bodyColor = {56 / 255, 56 / 255, 56 / 255, 1}
+  self.borderColor = { 1, 1, 1, 1 }
+  self.bodyColor = { 56 / 255, 56 / 255, 56 / 255, 1 }
   
   self.visible = true
 end
