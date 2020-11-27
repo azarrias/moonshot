@@ -3,13 +3,13 @@ Gunshot = Class{}
 function Gunshot:init(pos, shotType)
   self.entity = tiny.Entity(pos.x, pos.y)
   self.speed = 300
-  self.length = 6
+  self.length = 8
   self.height = 3
   self.color = { 199 / 255, 36 / 255, 177 / 255 }
   
   if shotType and shotType == 'enemy' then
     self.speed = -300
-    self.length = 8
+    self.length = 12
     self.height = 2
     self.color = { 21 / 255, 244 / 256, 238 / 255 }
   end

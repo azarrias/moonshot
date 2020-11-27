@@ -9,10 +9,10 @@ function Level:init(player, levelNum)
   self.mgSky = SkyLayer(25)
   self.fgSky = SkyLayer(30)
   
-  self.enemies = {}
-  for k, e in ipairs(self.data.enemies) do
-    table.insert(self.enemies, self:CreateEnemy(e.type_id, e.position, e.movement))
-  end
+  self.player = player
+  self.playerController = self.player.components['Script']['PlayerController']
+  self.playerController.canInput = false
+  self.player.position = tiny.Vector2D(-PLAYER_SIZE.x, VIRTUAL_SIZE.y / 2)
   
   self.pods = {}
   if self.data.pods then
@@ -21,10 +21,10 @@ function Level:init(player, levelNum)
     end
   end
   
-  self.player = player
-  self.playerController = self.player.components['Script']['PlayerController']
-  self.playerController.canInput = false
-  self.player.position = tiny.Vector2D(-PLAYER_SIZE.x, VIRTUAL_SIZE.y / 2)
+  self.enemies = {}
+  for k, e in ipairs(self.data.enemies) do
+    table.insert(self.enemies, self:CreateEnemy(e.type_id, e.position, e.movement))
+  end
   
   -- level transitions
   self.fadeInDuration = 2
@@ -153,8 +153,8 @@ function Level:CreateEnemy(type_id, pos, movement)
   enemy:AddComponent(sprite)
   
   local enemyController = enemy:AddScript('EnemyController')
-  --enemyController.cameraSpeedX = self.bgSky.cameraSpeedX
   enemyController.speed_y = enemy.position.y < VIRTUAL_SIZE.y / 2 and enemyController.speed_x or -enemyController.speed_x
+  enemyController.level = self
   
   if movement then
     enemyController.movement = movement
@@ -194,8 +194,8 @@ function Level:CreatePod(pos)
   local sprite = tiny.Sprite(TEXTURES['pod'])
   pod:AddComponent(sprite)
   
-  local colliderCenter = tiny.Vector2D(0, 2)
-  local colliderSize = POD_SIZE - tiny.Vector2D(6, 6)
+  local colliderCenter = tiny.Vector2D(0, 0)
+  local colliderSize = POD_SIZE - tiny.Vector2D(8, 8)
   
   local collider = tiny.Collider(colliderCenter, colliderSize)
   pod:AddComponent(collider)
