@@ -55,8 +55,8 @@ TEXTURES = {
   ['enemy_1'] = love.graphics.newImage('graphics/enemy_1.png'),
   ['enemy_2'] = love.graphics.newImage('graphics/enemy_2.png'),
   ['boss-001'] = love.graphics.newImage('graphics/boss-001-sheet.png'),
-  ['Alpha 12'] = love.graphics.newImage('graphics/boss-101-sheet.png'),
-  ['SR Comet'] = love.graphics.newImage('graphics/player_001-sheet.png'),
+  ['boss-101'] = love.graphics.newImage('graphics/boss-101-sheet.png'),
+  ['player-001'] = love.graphics.newImage('graphics/player_001-sheet.png'),
 }
 
 QUADS = {
@@ -70,6 +70,6 @@ QUADS = {
   ['enemy_1-moving'] = GenerateQuads(TEXTURES['enemy_1'], 1, 6, ENEMY_TYPE_1_SIZE),
   ['enemy_2-moving'] = GenerateQuads(TEXTURES['enemy_2'], 1, 6, ENEMY_TYPE_2_SIZE),
   ['boss-001'] = GenerateQuads(TEXTURES['boss-001'], 1, 5, AVATAR_SIZE),
-  ['Alpha 12'] = GenerateQuads(TEXTURES['Alpha 12'], 1, 5, AVATAR_SIZE),
-  ['SR Comet'] = GenerateQuads(TEXTURES['SR Comet'], 1, 9, AVATAR_SIZE),
+  ['boss-101'] = GenerateQuads(TEXTURES['boss-101'], 1, 5, AVATAR_SIZE),
+  ['player-001'] = GenerateQuads(TEXTURES['player-001'], 1, 9, AVATAR_SIZE),
 }

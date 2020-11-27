@@ -6,19 +6,11 @@ function StateDialogue:init(speaker, text, callback)
   self.bottomMargin = VIRTUAL_SIZE.y * 0.1
 
   self.speaker = speaker
+  self.avatarTextureId = self.speaker == 'Alpha 12' and 'boss-101' or 'player-001'
   self.avatar = self:CreateAvatar()
-  self.avatarAnimationTimer = Timer.after(0.5, 
-    function()
-      Timer.every(0.2, function()
-      local sprite = self.avatar.components['Sprite']
-      local r = math.random(0, 19)
-      local quad_id = r - 14
-      if r <= 17 then
-        quad_id = math.floor(r / 6) + 1
-      end
-      sprite:SetDrawable(TEXTURES[self.speaker], QUADS[self.speaker][quad_id])
-    end)
-  end)
+  self.avatarTimer = 0.3
+  self.avatarVariation = math.random(2)
+  self.avatarFrameId = 1
 
   self.textbox = Textbox(self.leftMargin + AVATAR_SIZE.x, VIRTUAL_SIZE.y - self.size.y - self.bottomMargin, 
     VIRTUAL_SIZE.x - self.leftMargin * 2 - AVATAR_SIZE.x, self.size.y, text, FONTS['retroville-s'])
@@ -33,14 +25,58 @@ end
 function StateDialogue:update(dt)
   self.running = true
   self.textbox:update(dt)
-  self.avatar:update(dt)
+
+  -- select next frame and animate avatars, depending on the speaker
+  self.avatarTimer = self.avatarTimer - dt
+  if self.avatarTimer < 0 then
+    -- randomize frame interval
+    self.avatarTimer = math.random(10, 20) / 100
+    
+    if self.speaker == 'Alpha 12' then
+      if self.avatarFrameId == 1 or self.avatarFrameId == 5 then
+        -- 20% chance to stay with mouth closed
+        if math.random(10) < 9 then
+          self.avatarFrameId = math.random(10) < 9 and 2 or 3
+        end
+      elseif self.avatarFrameId == 2 or self.avatarFrameId == 4 then
+        self.avatarFrameId = math.random(10) < 9 and 1 or 3
+      elseif self.avatarFrameId == 3 then
+        self.avatarFrameId = math.random(10) < 5 and 1 or 2
+      end    
+      -- 10% chance of changing facial expression
+      if self.avatarFrameId == 1 then
+        self.avatarFrameId = math.random(10) < 10 and 1 or 5
+      elseif self.avatarFrameId == 2 then
+        self.avatarFrameId = math.random(10) < 10 and 2 or 4
+      end
+    elseif self.speaker == 'SR Comet' then
+      if self.avatarFrameId == 1 or self.avatarFrameId == 2 or self.avatarFrameId == 3 then
+        -- 20% chance to stay with mouth closed
+        if math.random(10) < 9 then
+          self.avatarFrameId = math.random(10) < 9 and 4 or 7
+        end
+      elseif self.avatarFrameId == 4 or self.avatarFrameId == 5 or self.avatarFrameId == 6 then
+        self.avatarFrameId = math.random(10) < 9 and 1 or 7
+      elseif self.avatarFrameId == 7 or self.avatarFrameId == 8 or self.avatarFrameId == 9 then
+        self.avatarFrameId = math.random(10) < 5 and 1 or 4
+      end
+      -- apply variation
+      self.avatarFrameId = self.avatarFrameId + self.avatarVariation - 1
+      -- 10% chance of closing eyes
+      if math.random(10) == 10 then
+        self.avatarFrameId = self.avatarFrameId + 3 - self.avatarVariation
+      end
+    end
+    
+    local sprite = self.avatar.components['Sprite']
+    sprite:SetDrawable(TEXTURES[self.avatarTextureId], QUADS[self.avatarTextureId][self.avatarFrameId])
+  end
   
   -- fade out dialogue elements as soon as the textbox closes
   if self.textbox:isClosed() and not self.destroying then
-    self.avatarAnimationTimer:remove()
     local avatarFadeOutDuration = 0.3
     local sprite = self.avatar.components['Sprite']
-    sprite:SetDrawable(TEXTURES[self.speaker], QUADS[self.speaker][1])
+    sprite:SetDrawable(TEXTURES[self.avatarTextureId], QUADS[self.avatarTextureId][1])
     
     self.destroying = true
     Timer.tween(avatarFadeOutDuration, {
@@ -80,7 +116,7 @@ end
 function StateDialogue:CreateAvatar()
   local avatar = tiny.Entity(self.leftMargin + AVATAR_SIZE.x / 2, VIRTUAL_SIZE.y - self.size.y - self.bottomMargin - 10 + AVATAR_SIZE.y / 2)
   
-  local sprite = tiny.Sprite(TEXTURES[self.speaker], QUADS[self.speaker][1])
+  local sprite = tiny.Sprite(TEXTURES[self.avatarTextureId], QUADS[self.avatarTextureId][1])
   avatar:AddComponent(sprite)
   
   return avatar
