@@ -1,6 +1,6 @@
 -- data for game levels
 LEVELS = {
-  { -- level 1
+  --[[{ -- level 1
     dialogue = { [1] = { speaker = "Alpha 12", message = "SR Comet, this is Alpha one-two from the MCC ... radio check." },
                  [2] = { speaker = "SR Comet", message = "Read you loud and clear, chief! Go ahead..." },
                  [3] = { speaker = "Alpha 12", message = "A few aliens have been spotted from the ISS.\nThey are approaching the Earth's atmosphere.\n\nThey are few and shouldn't pose a threat, but you must neutralize them at all costs before they become an issue." },
@@ -31,7 +31,7 @@ LEVELS = {
                 { type_id = 1, position = tiny.Vector2D(2500, VIRTUAL_SIZE.y * 0.5) },
               }
   },
-  --[[{ -- level 2
+  { -- level 2
     dialogue = { [1] = { speaker = "Alpha 12", message = "You did well back there, SR Comet.\nStay sharp though, we have identified a big group of enemies coming your way.\nReach the moon remains as soon as possible, and get survivors out of harm's way." },
                  [2] = { speaker = "SR Comet", message = "SR Comet, roger, out.\n" },
                },
@@ -58,15 +58,12 @@ LEVELS = {
                 { type_id = 2, movement = 'straight-diagonal', position = tiny.Vector2D(2300 + 2 * (ENEMY_TYPE_2_SIZE.x + 4), 2 * VIRTUAL_SIZE.y / 3) },
                 { type_id = 2, movement = 'straight-diagonal', position = tiny.Vector2D(2300 + 3 * (ENEMY_TYPE_2_SIZE.x + 4), 2 * VIRTUAL_SIZE.y / 3) },
               }
-  }
+  }]]
   { -- level 3
     escape_pods = { { position = tiny.Vector2D(1300, VIRTUAL_SIZE.y * 0.5) }
                   },
-    finalXPos = 300
+    enemies = { { type_id = 1, position = tiny.Vector2D(1600, VIRTUAL_SIZE.y * 0.5) },
+              },
+    finalXPos = 400
   },
-  {
-    hasBoss = true,
-    finalXPos = 300
-  },
-  ]]
 }
