@@ -14,6 +14,13 @@ function Level:init(player, levelNum)
     table.insert(self.enemies, self:CreateEnemy(e.type_id, e.position, e.movement))
   end
   
+  self.pods = {}
+  if self.data.pods then
+    for k, p in ipairs(self.data.pods) do
+      table.insert(self.pods, self:CreatePod(p.position))
+    end
+  end
+  
   self.player = player
   self.playerController = self.player.components['Script']['PlayerController']
   self.playerController.canInput = false
@@ -49,6 +56,10 @@ function Level:update(dt)
   self.bgSky:update(dt)
   self.mgSky:update(dt)
   self.fgSky:update(dt)
+  
+  for k, pod in ipairs(self.pods) do
+    pod:update(dt)
+  end
   
   for k, enemy in ipairs(self.enemies) do
     enemy:update(dt)
@@ -102,8 +113,16 @@ function Level:render()
   self.mgSky:render()
   self.fgSky:render()
   
+  for k, pod in ipairs(self.pods) do
+    pod:render()
+  end
+  
   for k, enemy in ipairs(self.enemies) do
     enemy:render()
+    local controller = enemy.components['Script']['EnemyController']
+    for i, gunshot in ipairs(controller.gunshots) do
+      gunshot:render()
+    end
   end
   
   if self.fadeIn then
@@ -134,7 +153,7 @@ function Level:CreateEnemy(type_id, pos, movement)
   enemy:AddComponent(sprite)
   
   local enemyController = enemy:AddScript('EnemyController')
-  enemyController.cameraSpeedX = self.bgSky.cameraSpeedX
+  --enemyController.cameraSpeedX = self.bgSky.cameraSpeedX
   enemyController.speed_y = enemy.position.y < VIRTUAL_SIZE.y / 2 and enemyController.speed_x or -enemyController.speed_x
   
   if movement then
@@ -167,4 +186,21 @@ function Level:CreateEnemy(type_id, pos, movement)
   stateMoving.animation:AddFrame(TEXTURES['enemy_'..type_id], QUADS['enemy_'..type_id..'-moving'][6], movingFrameDuration)
   
   return enemy
+end
+
+function Level:CreatePod(pos)
+  local pod = tiny.Entity(pos.x, pos.y)
+    
+  local sprite = tiny.Sprite(TEXTURES['pod'])
+  pod:AddComponent(sprite)
+  
+  local colliderCenter = tiny.Vector2D(0, 2)
+  local colliderSize = POD_SIZE - tiny.Vector2D(6, 6)
+  
+  local collider = tiny.Collider(colliderCenter, colliderSize)
+  pod:AddComponent(collider)
+  
+  local controller = pod:AddScript('PodController')
+  
+  return pod
 end

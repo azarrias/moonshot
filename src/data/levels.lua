@@ -32,7 +32,7 @@ LEVELS = {
               }
   },
   { -- level 2
-    dialogue = { [1] = { speaker = "Alpha 12", message = "You did well back there, SR Comet.\nStay sharp though, we have identified a big group of enemies coming your way.\nReach the moon remains as soon as possible, and get survivors out of harm's way." },
+    dialogue = { [1] = { speaker = "Alpha 12", message = "You did well back there, SR Comet.\nStay sharp though, we have identified a big group of enemies coming your way.\nReach the moon remains as soon as possible, to carry out your rescue mission." },
                  [2] = { speaker = "SR Comet", message = "SR Comet, roger, out.\n" },
                },
     finalXPos = 600,
@@ -60,9 +60,12 @@ LEVELS = {
               }
   }]]
   { -- level 3
-    escape_pods = { { position = tiny.Vector2D(1300, VIRTUAL_SIZE.y * 0.5) }
-                  },
-    enemies = { { type_id = 1, position = tiny.Vector2D(1600, VIRTUAL_SIZE.y * 0.5) },
+    dialogue = { [1] = { speaker = "Alpha 12", message = "You are approaching the disaster zone. Some of the colony inhabitants managed to get away on escape pods, but the aliens are taking them out as we speak. Protect the escape pods as they get away to our base." },
+                 [2] = { speaker = "SR Comet", message = "Wilco, out." },
+               },
+    pods = { { position = tiny.Vector2D(900, VIRTUAL_SIZE.y * 0.5) }
+           },
+    enemies = { { type_id = 1, movement = 'shooting', position = tiny.Vector2D(1700, VIRTUAL_SIZE.y * 0.5) },
               },
     finalXPos = 400
   },

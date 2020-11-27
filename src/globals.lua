@@ -23,6 +23,7 @@ require 'HUD'
 require 'Level'
 require 'Panel'
 require 'PlayerController'
+require 'PodController'
 require 'StateDialogue'
 require 'StateGameOver'
 require 'StateLevelClear'
@@ -40,6 +41,7 @@ PLAYER_SIZE = tiny.Vector2D(30, 37)
 ENEMY_TYPE_1_SIZE = tiny.Vector2D(29, 31)
 ENEMY_TYPE_2_SIZE = tiny.Vector2D(42, 34)
 AVATAR_SIZE = tiny.Vector2D(69, 87)
+POD_SIZE = tiny.Vector2D(55, 49)
 
 -- data
 require 'data.levels'
@@ -57,6 +59,7 @@ TEXTURES = {
   ['boss-001'] = love.graphics.newImage('graphics/boss-001-sheet.png'),
   ['boss-101'] = love.graphics.newImage('graphics/boss-101-sheet.png'),
   ['player-001'] = love.graphics.newImage('graphics/player_001-sheet.png'),
+  ['pod'] = love.graphics.newImage('graphics/pod.png'),
 }
 
 QUADS = {
