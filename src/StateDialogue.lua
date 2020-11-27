@@ -5,6 +5,7 @@ function StateDialogue:init(speaker, text, callback)
   self.leftMargin = math.floor((VIRTUAL_SIZE.x - self.size.x) / 2)
   self.bottomMargin = VIRTUAL_SIZE.y * 0.1
 
+  self.speaker = speaker
   self.avatar = self:CreateAvatar()
   self.avatarAnimationTimer = Timer.after(0.5, 
     function()
@@ -15,13 +16,12 @@ function StateDialogue:init(speaker, text, callback)
       if r <= 17 then
         quad_id = math.floor(r / 6) + 1
       end
-      sprite:SetDrawable(TEXTURES['boss-101'], QUADS['boss-101'][quad_id])
+      sprite:SetDrawable(TEXTURES[self.speaker], QUADS[self.speaker][quad_id])
     end)
   end)
 
-  self.textbox = Textbox(self.leftMargin + BOSS_AVATAR_SIZE.x, VIRTUAL_SIZE.y - self.size.y - self.bottomMargin, 
-    VIRTUAL_SIZE.x - self.leftMargin * 2 - BOSS_AVATAR_SIZE.x, self.size.y, text, FONTS['retroville-s'])
-  self.speaker = speaker
+  self.textbox = Textbox(self.leftMargin + AVATAR_SIZE.x, VIRTUAL_SIZE.y - self.size.y - self.bottomMargin, 
+    VIRTUAL_SIZE.x - self.leftMargin * 2 - AVATAR_SIZE.x, self.size.y, text, FONTS['retroville-s'])
   self.speakerTabBorderColor = self.textbox.panel.borderColor
   self.speakerTabBodyColor = self.textbox.panel.bodyColor  
   self.callback = callback or function() end
@@ -40,7 +40,7 @@ function StateDialogue:update(dt)
     self.avatarAnimationTimer:remove()
     local avatarFadeOutDuration = 0.3
     local sprite = self.avatar.components['Sprite']
-    sprite:SetDrawable(TEXTURES['boss-101'], QUADS['boss-101'][1])
+    sprite:SetDrawable(TEXTURES[self.speaker], QUADS[self.speaker][1])
     
     self.destroying = true
     Timer.tween(avatarFadeOutDuration, {
@@ -78,9 +78,9 @@ function StateDialogue:render()
 end
 
 function StateDialogue:CreateAvatar()
-  local avatar = tiny.Entity(self.leftMargin + BOSS_AVATAR_SIZE.x / 2, VIRTUAL_SIZE.y - self.size.y - self.bottomMargin - 10 + BOSS_AVATAR_SIZE.y / 2)
+  local avatar = tiny.Entity(self.leftMargin + AVATAR_SIZE.x / 2, VIRTUAL_SIZE.y - self.size.y - self.bottomMargin - 10 + AVATAR_SIZE.y / 2)
   
-  local sprite = tiny.Sprite(TEXTURES['boss-101'], QUADS['boss-101'][1])
+  local sprite = tiny.Sprite(TEXTURES[self.speaker], QUADS[self.speaker][1])
   avatar:AddComponent(sprite)
   
   return avatar
