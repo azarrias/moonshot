@@ -60,6 +60,7 @@ end
 function Textbox:update(dt)
   if love.keyboard.keysPressed['enter'] or love.keyboard.keysPressed['return'] 
     or love.keyboard.keysPressed['space'] or love.mouse.buttonReleased[1] then
+      SOUNDS['skip']:play()
       self:next()
   end
 end

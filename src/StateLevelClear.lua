@@ -23,6 +23,7 @@ function StateLevelClear:update(dt)
   self.playState.player:update(dt)
   if self.displayText and self.canInput then
     if love.keyboard.keysPressed['space'] or love.keyboard.keysPressed['enter'] or love.keyboard.keysPressed['return'] or love.mouse.buttonReleased[1] then
+      SOUNDS['select']:play()
       self.canInput = false
       self.fadeOut = Fade({0, 0, 0, 0}, {0, 0, 0, 1}, self.fadeOutDuration,
         function() 

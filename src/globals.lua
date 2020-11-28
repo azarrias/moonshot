@@ -85,4 +85,9 @@ SOUNDS = {
   ['enemy-explosion'] = love.audio.newSource('sounds/Explosion20.wav', 'static'),
   ['player-killed'] = love.audio.newSource('sounds/Hit_Hurt47.wav', 'static'),
   ['player-hit'] = love.audio.newSource('sounds/Hit_Hurt83.wav', 'static'),
+  ['new-game'] = love.audio.newSource('sounds/Select.wav', 'static'),
+  ['select'] = love.audio.newSource('sounds/Blip_Select56.wav', 'static'),
+  ['skip'] = love.audio.newSource('sounds/Select_195.wav', 'static'),
 }
+
+SOUNDS['skip']:setVolume(0.3)
