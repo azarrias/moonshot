@@ -110,7 +110,12 @@ function Level:update(dt)
       if self.playerController.gunshots[i].entity.components['Collider'][1]:Collides(self.enemies[j].components['Collider'][1]) then
         local explosion = Explosion(self.enemies[j].position, 50)
         table.insert(self.explosions, explosion)
-        table.remove(self.enemies, j)
+        -- delay removal of the enemy to keep its gunshots alive
+        self.enemies[j].position = tiny.Vector2D(self.enemies[j].position.x, -500)
+        self.enemies[j].enabled = false
+        Timer.after(2, function()
+          table.remove(self.enemies, j)
+        end)
         table.remove(self.playerController.gunshots, i)
         self.playerController:GetPoints(1)
       end
@@ -118,28 +123,31 @@ function Level:update(dt)
   end
   
   for i = #self.enemies, 1, -1 do
-    -- destroy enemies once they get out of bounds
-    if self.enemies[i].position.x < 0 then
-      table.remove(self.enemies, i)
-      break
-    end
+    if self.enemies[i].enabled then
     
-    local enemyController = self.enemies[i].components['Script']['EnemyController']
-    for j = #enemyController.gunshots, 1, -1 do
-      -- destroy gunshots once they get out of bounds
-      if enemyController.gunshots[j].entity.position.x < 0 then
-        table.remove(self.enemyController.gunshots, j)
+      -- destroy enemies once they get out of bounds
+      if self.enemies[i].position.x < 0 then
+        table.remove(self.enemies, i)
         break
       end
       
-      -- check for collisions with escape pods
-      for k = #self.pods, 1, -1 do
-        if enemyController.gunshots[j].entity.components['Collider'][1]:Collides(self.pods[k].components['Collider'][1]) then
-          local explosion = Explosion(self.pods[k].position, 50)
-          table.insert(self.explosions, explosion)
-          table.remove(self.pods, k)
-          table.remove(enemyController.gunshots, j)
+      local enemyController = self.enemies[i].components['Script']['EnemyController']
+      for j = #enemyController.gunshots, 1, -1 do
+        -- destroy gunshots once they get out of bounds
+        if enemyController.gunshots[j].entity.position.x < 0 then
+          table.remove(self.enemyController.gunshots, j)
           break
+        end
+        
+        -- check for collisions with escape pods
+        for k = #self.pods, 1, -1 do
+          if enemyController.gunshots[j].entity.components['Collider'][1]:Collides(self.pods[k].components['Collider'][1]) then
+            local explosion = Explosion(self.pods[k].position, 50)
+            table.insert(self.explosions, explosion)
+            table.remove(self.pods, k)
+            table.remove(enemyController.gunshots, j)
+            break
+          end
         end
       end
     end
@@ -169,7 +177,7 @@ function Level:render()
   
   if self.fadeIn then
     self.fadeIn:render()
- end
+  end
 end
 
 function Level:CreateEnemy(type_id, pos, movement, shooting)
