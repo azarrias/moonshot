@@ -12,6 +12,9 @@ function Gunshot:init(pos, shotType)
     self.length = 12
     self.height = 2
     self.color = { 21 / 255, 244 / 256, 238 / 255 }
+    SOUNDS['enemy-gunshot']:play()
+  else
+    SOUNDS['player-gunshot']:play()
   end
   
   local collider = tiny.Collider(tiny.Vector2D(0, math.floor(self.height / 2)), tiny.Vector2D(self.length, self.height))

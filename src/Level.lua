@@ -82,7 +82,17 @@ function Level:update(dt)
         -- check for collisions between player and enemies
         if self.enemies[k].components['Collider'] then
           if self.player.components['Collider'][1]:Collides(self.enemies[k].components['Collider'][1]) then
-            table.remove(self.enemies, k)
+            local explosion = Explosion(self.enemies[k].position, 50)
+            SOUNDS['enemy-explosion']:play()
+            table.insert(self.explosions, explosion)
+            -- delay removal of the enemy to keep its gunshots alive
+            self.enemies[k].position = tiny.Vector2D(self.enemies[k].position.x, -500)
+            Timer.after(1, function()
+              self.enemies[k].enabled = false
+            end)
+            Timer.after(2, function()
+              table.remove(self.enemies, k)
+            end)
             self.playerController:TakeDamage(1)
             if self.playerController.hp <= 0 then
               local playerFadeOutDuration = 5
@@ -113,6 +123,7 @@ function Level:update(dt)
       if self.enemies[j].enabled then
         if self.playerController.gunshots[i].entity.components['Collider'][1]:Collides(self.enemies[j].components['Collider'][1]) then
           local explosion = Explosion(self.enemies[j].position, 50)
+          SOUNDS['enemy-explosion']:play()
           table.insert(self.explosions, explosion)
           -- delay removal of the enemy to keep its gunshots alive
           self.enemies[j].position = tiny.Vector2D(self.enemies[j].position.x, -500)
@@ -150,6 +161,7 @@ function Level:update(dt)
         for k = #self.pods, 1, -1 do
           if enemyController.gunshots[j].entity.components['Collider'][1]:Collides(self.pods[k].components['Collider'][1]) then
             local explosion = Explosion(self.pods[k].position, 50)
+            SOUNDS['pod-explosion']:play()
             table.insert(self.explosions, explosion)
             table.remove(self.pods, k)
             table.remove(enemyController.gunshots, j)
@@ -160,10 +172,11 @@ function Level:update(dt)
         -- check for collisions with player
         if not self.playerController.invulnerable then
           -- this code is almost duplicated above !!!
-          if enemyController.gunshots[j].entity.components['Collider'][1]:Collides(self.player.components['Collider'][1]) then
+          if enemyController.gunshots[j] and enemyController.gunshots[j].entity.components['Collider'][1]:Collides(self.player.components['Collider'][1]) then
             table.remove(enemyController.gunshots, j)
             self.playerController:TakeDamage(1)
             if self.playerController.hp <= 0 then
+              SOUNDS['player-killed']:play()
               local playerFadeOutDuration = 5
               gameManager:Push(StateGameOver(self, playerFadeOutDuration))
               self.playerController.invulnerable = true
@@ -172,6 +185,7 @@ function Level:update(dt)
                 [sprite.color] = { 1, 1, 1, 0 }
               })
             else
+              SOUNDS['player-hit']:play()
               self.playerController:MakeInvulnerable(1.5)
             end
           end

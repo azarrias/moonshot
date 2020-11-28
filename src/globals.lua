@@ -77,3 +77,12 @@ QUADS = {
   ['boss-101'] = GenerateQuads(TEXTURES['boss-101'], 1, 5, AVATAR_SIZE),
   ['player-001'] = GenerateQuads(TEXTURES['player-001'], 1, 9, AVATAR_SIZE),
 }
+
+SOUNDS = {
+  ['enemy-gunshot'] = love.audio.newSource('sounds/Laser_Shoot15.wav', 'static'),
+  ['player-gunshot'] = love.audio.newSource('sounds/Laser_Shoot11.wav', 'static'),
+  ['pod-explosion'] = love.audio.newSource('sounds/Explosion15.wav', 'static'),
+  ['enemy-explosion'] = love.audio.newSource('sounds/Explosion20.wav', 'static'),
+  ['player-killed'] = love.audio.newSource('sounds/Hit_Hurt47.wav', 'static'),
+  ['player-hit'] = love.audio.newSource('sounds/Hit_Hurt83.wav', 'static'),
+}
