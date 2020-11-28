@@ -16,6 +16,7 @@ function PlayerController:init()
   
   self.hp = 3
   self.points = 0
+  self.pods = 0
   self.hud = nil
 
   self.invulnerable = false
@@ -52,7 +53,8 @@ function PlayerController:update(dt)
       Timer.after(self.gunCooldown,
         function() self.canShootGun = true end)
     end
-  
+    
+--[[
     if love.keyboard.keysPressed['m'] and self.canShootLaser then
       self.laserBeamStartTime = love.timer.getTime()
       self.canShootLaser = false
@@ -62,6 +64,7 @@ function PlayerController:update(dt)
       Timer.after(self.laserBeamCooldown, 
         function() self.canShootLaser = true end)
     end
+    ]]
   
     if love.keyboard.isDown('down') then
       position.y = position.y + self.speed * dt
@@ -141,4 +144,9 @@ end
 function PlayerController:GetPoints(points)
   self.points = self.points + points
   self.hud.points = self.points
+end
+
+function PlayerController:AddPod()
+  self.pods = self.pods + 1
+  self.hud.pods = self.pods
 end

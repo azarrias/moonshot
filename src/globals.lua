@@ -39,6 +39,7 @@ require 'util'
 -- pixels resolution
 WINDOW_SIZE = tiny.Vector2D(1920, 1080) -- 16:9 aspect ratio
 VIRTUAL_SIZE = tiny.Vector2D(640, 360)
+LEVEL_OFFSET = tiny.Vector2D(0, math.floor(VIRTUAL_SIZE.y / 20))
 PLAYER_SIZE = tiny.Vector2D(30, 37)
 ENEMY_TYPE_1_SIZE = tiny.Vector2D(29, 31)
 ENEMY_TYPE_2_SIZE = tiny.Vector2D(42, 34)

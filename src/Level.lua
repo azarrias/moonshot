@@ -59,8 +59,12 @@ function Level:update(dt)
   self.mgSky:update(dt)
   self.fgSky:update(dt)
   
-  for k, pod in ipairs(self.pods) do
-    pod:update(dt)
+  for k = #self.pods, 1, -1 do
+    self.pods[k]:update(dt)
+    if self.pods[k].position.x + POD_SIZE.x / 2 < 0 then
+      table.remove(self.pods, k)
+      self.playerController:AddPod()
+    end
   end
   
   for k, enemy in ipairs(self.enemies) do
@@ -87,12 +91,7 @@ function Level:update(dt)
             table.insert(self.explosions, explosion)
             -- delay removal of the enemy to keep its gunshots alive
             self.enemies[k].position = tiny.Vector2D(self.enemies[k].position.x, -500)
-            Timer.after(1, function()
-              self.enemies[k].enabled = false
-            end)
-            Timer.after(2, function()
-              table.remove(self.enemies, k)
-            end)
+            self.enemies[k].enabled = false
             self.playerController:TakeDamage(1)
             if self.playerController.hp <= 0 then
               local playerFadeOutDuration = 5
@@ -127,28 +126,23 @@ function Level:update(dt)
           table.insert(self.explosions, explosion)
           -- delay removal of the enemy to keep its gunshots alive
           self.enemies[j].position = tiny.Vector2D(self.enemies[j].position.x, -500)
-          Timer.after(1, function()
-            self.enemies[j].enabled = false
-          end)
-          Timer.after(2, function()
-            table.remove(self.enemies, j)
-          end)
+          self.enemies[j].enabled = false
           table.remove(self.playerController.gunshots, i)
           self.playerController:GetPoints(1)
+          break
         end
       end
     end
   end
   
   for i = #self.enemies, 1, -1 do
-    if self.enemies[i].enabled then
+    -- destroy enemies once they get out of bounds
+    if self.enemies[i].position.x < 0 then
+      table.remove(self.enemies, i)
+      break
+    end
     
-      -- destroy enemies once they get out of bounds
-      if self.enemies[i].position.x < 0 then
-        table.remove(self.enemies, i)
-        break
-      end
-      
+    if self.enemies[i].enabled then
       local enemyController = self.enemies[i].components['Script']['EnemyController']
       for j = #enemyController.gunshots, 1, -1 do
         -- destroy gunshots once they get out of bounds

@@ -12,7 +12,7 @@ end
 function StatePlay:NewLevel()
   local levelNum = self.level ~= nil and self.level.num ~= nil and self.level.num + 1 or 1
   self.level = Level(self.player, levelNum)
-  self.hud = HUD(self.playerController, levelNum, self.playerController.points)
+  self.hud = HUD(self.playerController, levelNum, self.playerController.points, self.playerController.pods)
   self.playerController.hud = self.hud
 end
 
@@ -23,6 +23,11 @@ function StatePlay:update(dt)
   self.level:update(dt)
   self.hud:update(dt)
   self.player:update(dt)
+  
+  -- REMOVE THIS!!!
+  if love.keyboard.keysPressed['m'] then
+    print(self.level.bgSky.cameraOffsetX)
+  end
   
   -- use the x camera offset of the background sky layer to check if level was cleared
   if self.level.bgSky.cameraOffsetX > self.level.data.finalXPos then
