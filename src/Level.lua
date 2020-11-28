@@ -50,6 +50,8 @@ function Level:init(player, levelNum)
               self.playerController.canInput = true 
             end)
   end)
+
+  self.explosions = {}
 end
 
 function Level:update(dt)
@@ -63,6 +65,14 @@ function Level:update(dt)
   
   for k, enemy in ipairs(self.enemies) do
     enemy:update(dt)
+  end
+  
+  for k = #self.explosions, 1, -1 do
+    local explosion = self.explosions[k]
+    explosion:update(dt)
+    if explosion.particleSystem:getCount() == 0 then
+      table.remove(self.explosions, k)
+    end
   end
   
   -- check for collisions between player and enemies
@@ -99,6 +109,8 @@ function Level:update(dt)
     -- check for collisions between gunshots and enemies
     for j = #self.enemies, 1, -1 do
       if self.playerController.gunshots[i].entity.components['Collider'][1]:Collides(self.enemies[j].components['Collider'][1]) then
+        local explosion = Explosion(self.enemies[j].position, 50)
+        table.insert(self.explosions, explosion)
         table.remove(self.enemies, j)
         table.remove(self.playerController.gunshots, i)
         self.playerController:GetPoints(1)
@@ -125,9 +137,13 @@ function Level:render()
     end
   end
   
+  for k, explosion in ipairs(self.explosions) do
+    explosion:render()
+  end
+  
   if self.fadeIn then
     self.fadeIn:render()
-  end
+ end
 end
 
 function Level:CreateEnemy(type_id, pos, movement)

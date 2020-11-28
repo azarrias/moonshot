@@ -17,6 +17,7 @@ tiny = require 'libs.tiny'
 
 -- general purpose / utility
 require 'EnemyController'
+require 'Explosion'
 require 'Fade'
 require 'Gunshot'
 require 'HUD'
