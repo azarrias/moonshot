@@ -75,24 +75,26 @@ function Level:update(dt)
     end
   end
   
-  -- check for collisions between player and enemies
   -- iterate backwards for safe removal
   if not self.playerController.invulnerable then
     for k = #self.enemies, 1, -1 do
-      if self.enemies[k].components['Collider'] then
-        if self.player.components['Collider'][1]:Collides(self.enemies[k].components['Collider'][1]) then
-          table.remove(self.enemies, k)
-          self.playerController:TakeDamage(1)
-          if self.playerController.hp <= 0 then
-            local playerFadeOutDuration = 5
-            gameManager:Push(StateGameOver(self, playerFadeOutDuration))
-            self.playerController.invulnerable = true
-            local sprite = self.player.components['Sprite']
-            Timer.tween(playerFadeOutDuration, {
-              [sprite.color] = { 1, 1, 1, 0 }
-            })
-          else
-            self.playerController:MakeInvulnerable(1.5)
+      if self.enemies[k].enabled then
+        -- check for collisions between player and enemies
+        if self.enemies[k].components['Collider'] then
+          if self.player.components['Collider'][1]:Collides(self.enemies[k].components['Collider'][1]) then
+            table.remove(self.enemies, k)
+            self.playerController:TakeDamage(1)
+            if self.playerController.hp <= 0 then
+              local playerFadeOutDuration = 5
+              gameManager:Push(StateGameOver(self, playerFadeOutDuration))
+              self.playerController.invulnerable = true
+              local sprite = self.player.components['Sprite']
+              Timer.tween(playerFadeOutDuration, {
+                [sprite.color] = { 1, 1, 1, 0 }
+              })
+            else
+              self.playerController:MakeInvulnerable(1.5)
+            end
           end
         end
       end
@@ -152,6 +154,26 @@ function Level:update(dt)
             table.remove(self.pods, k)
             table.remove(enemyController.gunshots, j)
             break
+          end
+        end
+        
+        -- check for collisions with player
+        if not self.playerController.invulnerable then
+          -- this code is almost duplicated above !!!
+          if enemyController.gunshots[j].entity.components['Collider'][1]:Collides(self.player.components['Collider'][1]) then
+            table.remove(enemyController.gunshots, j)
+            self.playerController:TakeDamage(1)
+            if self.playerController.hp <= 0 then
+              local playerFadeOutDuration = 5
+              gameManager:Push(StateGameOver(self, playerFadeOutDuration))
+              self.playerController.invulnerable = true
+              local sprite = self.player.components['Sprite']
+              Timer.tween(playerFadeOutDuration, {
+                [sprite.color] = { 1, 1, 1, 0 }
+              })
+            else
+              self.playerController:MakeInvulnerable(1.5)
+            end
           end
         end
       end
