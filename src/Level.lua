@@ -23,7 +23,7 @@ function Level:init(player, levelNum)
   
   self.enemies = {}
   for k, e in ipairs(self.data.enemies) do
-    table.insert(self.enemies, self:CreateEnemy(e.type_id, e.position, e.movement))
+    table.insert(self.enemies, self:CreateEnemy(e.type_id, e.position, e.movement, e.shooting))
   end
   
   -- level transitions
@@ -146,7 +146,7 @@ function Level:render()
  end
 end
 
-function Level:CreateEnemy(type_id, pos, movement)
+function Level:CreateEnemy(type_id, pos, movement, shooting)
   local enemy = tiny.Entity(pos.x, pos.y)
   
   -- variables that depend on the type of enemy (sprite)
@@ -176,6 +176,12 @@ function Level:CreateEnemy(type_id, pos, movement)
     enemyController.movement = movement
   else
     enemyController.movement = 'straight'
+  end
+  
+  if shooting then
+    enemyController.shooting = shooting
+  else
+    enemyController.shooting = false
   end
   
   local collider = tiny.Collider(colliderCenter, colliderSize)

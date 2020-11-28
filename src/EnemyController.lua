@@ -5,6 +5,7 @@ function EnemyController:init()
   self.speed_x = 100
   self.speed_y = nil
   self.movement = nil
+  self.shooting = nil
   
   self.gunshots = {}
   self.gunCooldown = 0.5
@@ -21,7 +22,7 @@ function EnemyController:update(dt)
   if self.movement == 'straight-diagonal' and position.x < VIRTUAL_SIZE.x / 2 then
     position.y = position.y + self.speed_y * 0.5 * dt
   end
-  if self.movement == 'shooting' then
+  if self.shooting then
     if self.canShootGun and position.x < VIRTUAL_SIZE.x then
       for k, pod in ipairs(self.level.pods) do
         if math.abs(position.y - pod.position.y) < self.engagingMargin.y and

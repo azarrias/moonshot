@@ -67,7 +67,7 @@ LEVELS = {
              { position = tiny.Vector2D(924, VIRTUAL_SIZE.y * 0.26) },
              { position = tiny.Vector2D(943, VIRTUAL_SIZE.y * 0.56) },
            },
-    enemies = { { type_id = 1, movement = 'shooting', position = tiny.Vector2D(1800, VIRTUAL_SIZE.y * 0.5) },
+    enemies = { { type_id = 1, shooting = true, position = tiny.Vector2D(1800, VIRTUAL_SIZE.y * 0.5) },
               },
     finalXPos = 400
   },
