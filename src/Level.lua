@@ -103,7 +103,6 @@ function Level:update(dt)
     -- destroy them once they get out of bounds
     if self.playerController.gunshots[i].entity.position.x > VIRTUAL_SIZE.x then
       table.remove(self.playerController.gunshots, i)
-      break
     end
     
     -- check for collisions between gunshots and enemies
@@ -114,7 +113,34 @@ function Level:update(dt)
         table.remove(self.enemies, j)
         table.remove(self.playerController.gunshots, i)
         self.playerController:GetPoints(1)
+      end
+    end
+  end
+  
+  for i = #self.enemies, 1, -1 do
+    -- destroy enemies once they get out of bounds
+    if self.enemies[i].position.x < 0 then
+      table.remove(self.enemies, i)
+      break
+    end
+    
+    local enemyController = self.enemies[i].components['Script']['EnemyController']
+    for j = #enemyController.gunshots, 1, -1 do
+      -- destroy gunshots once they get out of bounds
+      if enemyController.gunshots[j].entity.position.x < 0 then
+        table.remove(self.enemyController.gunshots, j)
         break
+      end
+      
+      -- check for collisions with escape pods
+      for k = #self.pods, 1, -1 do
+        if enemyController.gunshots[j].entity.components['Collider'][1]:Collides(self.pods[k].components['Collider'][1]) then
+          local explosion = Explosion(self.pods[k].position, 50)
+          table.insert(self.explosions, explosion)
+          table.remove(self.pods, k)
+          table.remove(enemyController.gunshots, j)
+          break
+        end
       end
     end
   end
@@ -190,12 +216,6 @@ function Level:CreateEnemy(type_id, pos, movement, shooting)
   -- create animator controller and setup parameters
   local animatorController = tiny.AnimatorController('EnemyAnimatorController')
   enemy:AddComponent(animatorController)
-  
-  --animatorController:AddParameter('MoveDown', tiny.AnimatorControllerParameterType.Bool)
-  --animatorController:AddParameter('MoveUp', tiny.AnimatorControllerParameterType.Bool)
-  --animatorController:AddParameter('MoveLeft', tiny.AnimatorControllerParameterType.Bool)
-  --animatorController:AddParameter('MoveRight', tiny.AnimatorControllerParameterType.Bool)
-  --animatorController:AddParameter("Shoot", tiny.AnimatorControllerParameterType.Trigger)
   
   -- create state machine states (first state to be created will be the default state)
   local movingFrameDuration = 0.2
