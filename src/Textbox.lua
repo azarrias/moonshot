@@ -58,8 +58,8 @@ function Textbox:next()
 end
 
 function Textbox:update(dt)
-  if love.keyboard.keysPressed['enter'] or love.keyboard.keysPressed['return'] 
-    or love.keyboard.keysPressed['space'] or love.mouse.buttonReleased[1] then
+  if not self:isClosed() and (love.keyboard.keysPressed['enter'] or love.keyboard.keysPressed['return'] 
+    or love.keyboard.keysPressed['space'] or love.mouse.buttonReleased[1]) then
       SOUNDS['skip']:play()
       self:next()
   end
@@ -78,7 +78,7 @@ function Textbox:render()
   end
   
   -- render triangle to indicate required key press to advance to the next text box
-  if self.canInput then
+  if not self:isClosed() then
     love.graphics.setColor(self.triangleColor)
     love.graphics.setLineWidth(1.5)
     if self.drawTriangleOutline then
