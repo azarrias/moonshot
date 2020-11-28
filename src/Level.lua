@@ -103,21 +103,26 @@ function Level:update(dt)
     -- destroy them once they get out of bounds
     if self.playerController.gunshots[i].entity.position.x > VIRTUAL_SIZE.x then
       table.remove(self.playerController.gunshots, i)
+      break
     end
     
     -- check for collisions between gunshots and enemies
     for j = #self.enemies, 1, -1 do
-      if self.playerController.gunshots[i].entity.components['Collider'][1]:Collides(self.enemies[j].components['Collider'][1]) then
-        local explosion = Explosion(self.enemies[j].position, 50)
-        table.insert(self.explosions, explosion)
-        -- delay removal of the enemy to keep its gunshots alive
-        self.enemies[j].position = tiny.Vector2D(self.enemies[j].position.x, -500)
-        self.enemies[j].enabled = false
-        Timer.after(2, function()
-          table.remove(self.enemies, j)
-        end)
-        table.remove(self.playerController.gunshots, i)
-        self.playerController:GetPoints(1)
+      if self.enemies[j].enabled then
+        if self.playerController.gunshots[i].entity.components['Collider'][1]:Collides(self.enemies[j].components['Collider'][1]) then
+          local explosion = Explosion(self.enemies[j].position, 50)
+          table.insert(self.explosions, explosion)
+          -- delay removal of the enemy to keep its gunshots alive
+          self.enemies[j].position = tiny.Vector2D(self.enemies[j].position.x, -500)
+          Timer.after(1, function()
+            self.enemies[j].enabled = false
+          end)
+          Timer.after(2, function()
+            table.remove(self.enemies, j)
+          end)
+          table.remove(self.playerController.gunshots, i)
+          self.playerController:GetPoints(1)
+        end
       end
     end
   end
@@ -135,7 +140,7 @@ function Level:update(dt)
       for j = #enemyController.gunshots, 1, -1 do
         -- destroy gunshots once they get out of bounds
         if enemyController.gunshots[j].entity.position.x < 0 then
-          table.remove(self.enemyController.gunshots, j)
+          table.remove(enemyController.gunshots, j)
           break
         end
         

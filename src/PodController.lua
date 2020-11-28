@@ -2,7 +2,7 @@ PodController = Class{__includes=tiny.Script}
 
 function PodController:init()
   tiny.Script.init(self, 'PodController')
-  self.speed_x = 40
+  self.speed_x = math.random(4000, 4500) / 100
 end
 
 function PodController:update(dt)
