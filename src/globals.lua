@@ -1,7 +1,7 @@
 --[[
     constants
   ]]
-GAME_TITLE = 'Moonshot'
+GAME_TITLE = 'Zoom to the Moon'
 DEBUG_MODE = true
 
 -- OS checks in order to make necessary adjustments to support multiplatform
@@ -27,6 +27,7 @@ require 'PlayerController'
 require 'PodController'
 require 'StateDialogue'
 require 'StateGameOver'
+require 'StateIntro'
 require 'StateLevelClear'
 require 'StatePlay'
 require 'StateStart'
@@ -50,6 +51,9 @@ require 'data.levels'
 -- resources
 FONTS = {
   ['retro-l'] = love.graphics.newFont('fonts/retro.ttf', 64),
+  ['retro-m'] = love.graphics.newFont('fonts/retro.ttf', 32),
+  ['retro-s'] = love.graphics.newFont('fonts/retro.ttf', 16),
+  ['retroville-m'] = love.graphics.newFont('fonts/Retroville NC.ttf', 20),
   ['retroville-s'] = love.graphics.newFont('fonts/Retroville NC.ttf', 10) -- 10px bitmap
 }
 

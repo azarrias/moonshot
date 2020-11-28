@@ -132,8 +132,12 @@ end
     shadow - DEFAULT: false
     string
   ]]
-function RenderCenteredText(formattedText)
+function RenderCenteredText(formattedText, offset)
   local accumulated_height = 0
+  
+  if offset then
+    accumulated_height = offset
+  end
   
   -- calculate the accumulated height and populate the formatted text table with defaults if needed
   for k, line in pairs(formattedText) do
