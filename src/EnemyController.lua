@@ -8,7 +8,7 @@ function EnemyController:init()
   self.shooting = nil
   
   self.gunshots = {}
-  self.gunCooldown = 0.5
+  self.gunCooldown = 0.6
   
   self.canShootGun = true
   self.engagingMargin = tiny.Vector2D(VIRTUAL_SIZE.x / 2, PLAYER_SIZE.y)

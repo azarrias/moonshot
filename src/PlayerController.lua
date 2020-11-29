@@ -14,7 +14,7 @@ function PlayerController:init()
   self.canShootGun = true
   self.canShootLaser = true
   
-  self.hp = 3
+  self.hp = 5
   self.points = 0
   self.pods = 0
   self.hud = nil

@@ -5,7 +5,7 @@ function HUD:init(playerController, level, points, pods)
   self.level = level
   self.points = points
   self.hp = self.playerController.hp
-  self.maxhp = 3
+  self.maxhp = 5
   self.pods = pods
   
   -- health icon
