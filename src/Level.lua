@@ -95,8 +95,11 @@ function Level:update(dt)
             self.playerController:TakeDamage(1)
             if self.playerController.hp <= 0 then
               local playerFadeOutDuration = 5
-              gameManager:Push(StateGameOver(self, playerFadeOutDuration))
+              Timer.after(2, function()
+                gameManager:Push(StateGameOver(self, playerFadeOutDuration - 2))
+              end)
               self.playerController.invulnerable = true
+              self.playerController.canInput = false
               local sprite = self.player.components['Sprite']
               Timer.tween(playerFadeOutDuration, {
                 [sprite.color] = { 1, 1, 1, 0 }
