@@ -33,7 +33,7 @@ Skip / select | Space bar
 
 ## Credits
 
-**Art:** Enric Gibert
-**Design:** Enric Gibert and Adolfo Zarrias
-**Programming:** Adolfo Zarrias
-**Sound / Music:** Adolfo Zarrias
+- **Art:** Enric Gibert
+- **Design:** Enric Gibert and Adolfo Zarrias
+- **Programming:** Adolfo Zarrias
+- **Sound / Music:** Adolfo Zarrias
