@@ -73,6 +73,7 @@ function love.draw()
   gameManager:render()
   
   -- draw fps indicator
+  --[[
   local fps = love.timer.getFPS()
   if fps >= 60 then
     love.graphics.setColor(0, 1, 0)
@@ -81,5 +82,6 @@ function love.draw()
   end
   love.graphics.setFont(FONTS['retroville-s'])
   love.graphics.printf("FPS: " .. fps, 0, VIRTUAL_SIZE.y - 5 - love.graphics.getFont():getHeight(), VIRTUAL_SIZE.x - 5, 'right')
+  ]]
   push:finish()
 end
