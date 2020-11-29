@@ -6,6 +6,12 @@ function StateIntro:init()
   -- level transitions
   self.fadeColor = {0, 0, 0, 0.4}
   self.fadeInDuration = 2
+  self.soundVolume = 0
+  SOUNDS['buzz']:play()
+  Timer.tween(self.fadeInDuration, {
+    [self] = { soundVolume = 0.5 }
+  })
+
   self.fadeIn = Fade({0, 0, 0, 1}, {0, 0, 0, 0.4}, self.fadeInDuration,
     function() 
       self.fadeIn = nil
@@ -30,12 +36,22 @@ function StateIntro:init()
 end
 
 function StateIntro:update(dt)
+  SOUNDS['buzz']:setVolume(self.soundVolume)
   --self.bgSky:update(dt)
+  
   if not self.destroying then
     if self.textPos < -2150 then
       self.destroying = true
       local fadeOutDuration = 2
       Timer.after(0.5, function()
+        Timer.tween(fadeOutDuration, {
+          [self] = { soundVolume = 0 }
+        })
+        :finish(function() 
+          SOUNDS['buzz']:stop()
+          SOUNDS['buzz']:setVolume(0.5) 
+          end)
+    
         self.fadeOut = Fade({0, 0, 0, 0}, {0, 0, 0, 1}, fadeOutDuration,
           function()
             gameManager:Pop()

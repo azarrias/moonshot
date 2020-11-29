@@ -52,12 +52,17 @@ function Level:init(player, levelNum)
   end)
 
   self.explosions = {}
+  
+  self.musicVolume = 1
+  SOUNDS['music']:play()
 end
 
 function Level:update(dt)
   self.bgSky:update(dt)
   self.mgSky:update(dt)
   self.fgSky:update(dt)
+  
+  SOUNDS['music']:setVolume(self.musicVolume)
   
   for k = #self.pods, 1, -1 do
     self.pods[k]:update(dt)
@@ -102,8 +107,10 @@ function Level:update(dt)
               self.playerController.canInput = false
               local sprite = self.player.components['Sprite']
               Timer.tween(playerFadeOutDuration, {
-                [sprite.color] = { 1, 1, 1, 0 }
+                [sprite.color] = { 1, 1, 1, 0 },
+                [self] = { musicVolume = 0 }
               })
+              :finish(function() SOUNDS['music']:stop() end)
             else
               self.playerController:MakeInvulnerable(1.5)
             end
@@ -179,8 +186,10 @@ function Level:update(dt)
               self.playerController.invulnerable = true
               local sprite = self.player.components['Sprite']
               Timer.tween(playerFadeOutDuration, {
-                [sprite.color] = { 1, 1, 1, 0 }
+                [sprite.color] = { 1, 1, 1, 0 },
+                [self] = { musicVolume = 0 }
               })
+              :finish(function() SOUNDS['music']:stop() end)
             else
               SOUNDS['player-hit']:play()
               self.playerController:MakeInvulnerable(1.5)

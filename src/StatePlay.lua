@@ -38,9 +38,13 @@ function StatePlay:update(dt)
     Timer.after(1, function()
       animatorController.stateMachine.currentState = animatorController.stateMachine.states['MovingRight']
       Timer.tween(duration, {
-        [self.player.position] = { x = VIRTUAL_SIZE.x + PLAYER_SIZE.x }
+        [self.player.position] = { x = VIRTUAL_SIZE.x + PLAYER_SIZE.x },
+        [self.level] = { musicVolume = 0 }
       })
-      :finish(function() animatorController.stateMachine.currentState = animatorController.stateMachine.states['Idle'] end)
+      :finish(function() 
+        animatorController.stateMachine.currentState = animatorController.stateMachine.states['Idle'] 
+        SOUNDS['music']:stop()
+      end)
     end)
     if LEVELS[self.level.num + 1] ~= nil then
       gameManager:Push(StateLevelClear(self, 1 + duration))

@@ -9,7 +9,7 @@ function StateStart:init()
   self.pods = {}
   self.podsSpeed = 50
   
-  self.teamText = "1916 underdogs presents"
+  self.teamText = "1916 Underdogs presents"
   self.teamTextColor = {0, 0, 0, 1}
   
   self.printGameTitle = false

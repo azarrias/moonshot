@@ -2,7 +2,7 @@
     constants
   ]]
 GAME_TITLE = 'Zoom to the Moon'
-DEBUG_MODE = true
+DEBUG_MODE = false
 
 -- OS checks in order to make necessary adjustments to support multiplatform
 MOBILE_OS = (love._version_major > 0 or love._version_minor >= 9) and (love.system.getOS() == 'Android' or love.system.getOS() == 'OS X')
@@ -93,6 +93,15 @@ SOUNDS = {
   ['new-game'] = love.audio.newSource('sounds/Select.wav', 'static'),
   ['select'] = love.audio.newSource('sounds/Blip_Select56.wav', 'static'),
   ['skip'] = love.audio.newSource('sounds/Select_195.wav', 'static'),
+  ['music'] = love.audio.newSource('sounds/music.mp3', 'stream'),
+  ['buzz'] = love.audio.newSource('sounds/background_buzz.mp3', 'stream'),
+  ['win'] = love.audio.newSource('sounds/win.mp3', 'stream'),
 }
 
+SOUNDS['enemy-gunshot']:setVolume(0.8)
+SOUNDS['player-gunshot']:setVolume(0.8)
+SOUNDS['pod-explosion']:setVolume(0.8)
+SOUNDS['new-game']:setVolume(0.9)
+SOUNDS['select']:setVolume(0.9)
 SOUNDS['skip']:setVolume(0.3)
+SOUNDS['buzz']:setVolume(0.5)

@@ -10,6 +10,10 @@ function StateVictory:init(playState, textDelay)
   self.displayText = false
   Timer.after(textDelay, function() self.displayText = true end)
   
+  self.soundVolume = 1
+  SOUNDS['win']:setLooping(true)
+  SOUNDS['win']:play()
+  
   self.fadeOut = nil
   self.fadeOutDuration = 1
 end
@@ -18,11 +22,21 @@ function StateVictory:enter()
 end
 
 function StateVictory:update(dt)
+  SOUNDS['win']:setVolume(self.soundVolume)
+  
   self.playState.level:update(dt)
   self.playState.player:update(dt)
   if self.displayText then
     if love.keyboard.keysPressed['space'] or love.keyboard.keysPressed['enter'] or love.keyboard.keysPressed['return'] or love.mouse.buttonReleased[1] then
       SOUNDS['select']:play()
+      Timer.tween(self.fadeOutDuration, {
+        [self] = { soundVolume = 0 }
+      })
+      :finish(function() 
+        SOUNDS['win']:stop()
+        SOUNDS['win']:setVolume(1)
+      end)
+        
       self.fadeOut = Fade({0, 0, 0, 0}, {0, 0, 0, 1}, self.fadeOutDuration,
         function() 
           gameManager:Pop() -- self
