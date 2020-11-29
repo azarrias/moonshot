@@ -4,10 +4,21 @@ function StateIntro:init()
   self.bgSky = SkyLayer(0)
   
   -- level transitions
+  self.fadeColor = {0, 0, 0, 0.4}
   self.fadeInDuration = 2
-  self.fadeIn = Fade({0, 0, 0, 1}, {0, 0, 0, 0}, self.fadeInDuration,
+  self.fadeIn = Fade({0, 0, 0, 1}, {0, 0, 0, 0.4}, self.fadeInDuration,
     function() 
       self.fadeIn = nil
+      Timer.every(2, function()
+        Timer.tween(1, {
+          [self.fadeColor] = { 0, 0, 0, 0.4 },
+        })
+        :finish(function()
+          Timer.tween(1, {
+            [self.fadeColor] = { 0, 0, 0, 0.6 }
+          })
+        end)
+      end)
     end)
   
   self.text = {
@@ -43,10 +54,18 @@ end
 
 function StateIntro:render()
   self.bgSky:render()
+  
+  if self.fadeIn == nil then
+    love.graphics.setColor(self.fadeColor)
+    love.graphics.rectangle('fill', 0, 0, VIRTUAL_SIZE.x, VIRTUAL_SIZE.y)
+  end
+  
   RenderCenteredText(self.text, math.floor(self.textPos + 0.5))
+  
   if self.fadeIn then
     self.fadeIn:render()
   end
+  
   if self.fadeOut then
     self.fadeOut:render()
   end
